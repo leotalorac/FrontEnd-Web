@@ -10,6 +10,7 @@ import Modal from 'react-bootstrap/Modal'
 import Container from 'react-bootstrap/Container'
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
+import { getPosts } from '../helpers'
 import 'bootstrap/dist/css/bootstrap.css';
 
 
@@ -23,7 +24,7 @@ function NewPostModal(props) {
         >
             <Modal.Header closeButton>
                 <Modal.Title style={{ color: "#5E90F2", marginBottom: "2%" }} id="contained-modal-title-vcenter">
-                Nueva publicación
+                    Nueva publicación
           </Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -79,17 +80,13 @@ const Forum = () => {
 
 
     useEffect(() => {
-        axios.get("http://52.200.134.90:3000/forums/" + id).then((res) => {
+        getPosts(id).then((res) => {
             const forumData = res.data[0];
             setForum(forumData)
-        })
-            .catch((error) => {
-                console.log(error);
-            });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        }).catch()
     }, [])
 
-    console.log(forum)
+    //console.log(forum)
 
     return (
         <Container style={{ margin: '5%' }}>
@@ -114,16 +111,16 @@ const Forum = () => {
                         <Card.Header style={{ color: "white", fontWeight: "bold" }}>{post.title} | {post.userCreator}</Card.Header>
                         <ListGroup.Item key={index} >
                             <p style={{ marginBottom: "5%" }}>{post.content}</p>
-                            {post.comments.length !== 0 && !commentsShow && <Link style={{ color:"#5E90F2" }} onClick={() => toggleCommentsShow(true)}>Mostrar comentarios: {post.comments.length}</Link>}
-                            {commentsShow && <Link style={{ color:"#5E90F2" }} onClick={() => toggleCommentsShow(false)}>Esconder comentarios</Link>}
-                            { commentsShow && forum.posts[index].comments.map((comment, index2) =>
-                                <ListGroup.Item style={{ marginBottom: "2%", marginTop:"1%" }} key={index2} >
+                            {post.comments.length !== 0 && !commentsShow && <Link style={{ color: "#5E90F2" }} onClick={() => toggleCommentsShow(true)}>Mostrar comentarios: {post.comments.length}</Link>}
+                            {commentsShow && <Link style={{ color: "#5E90F2" }} onClick={() => toggleCommentsShow(false)}>Esconder comentarios</Link>}
+                            {commentsShow && forum.posts[index].comments.map((comment, index2) =>
+                                <ListGroup.Item style={{ marginBottom: "2%", marginTop: "1%" }} key={index2} >
                                     <p style={{ fontWeight: "lighter" }}>{comment.userCreator} | {String(comment.createdAt).substr(0, 10)}</p>
                                     <p>{comment.content}</p>
-                                    {comment.answer.length !== 0 && !answersShow && <Link style={{ color:"#5E90F2" }} onClick={() => toggleAnswersShow(true)}>Mostrar respuestas: {comment.answer.length}</Link>}
-                                    {answersShow && <Link style={{  color:"#5E90F2" }} onClick={() => toggleAnswersShow(false)}>Esconder respuestas</Link>}
+                                    {comment.answer.length !== 0 && !answersShow && <Link style={{ color: "#5E90F2" }} onClick={() => toggleAnswersShow(true)}>Mostrar respuestas: {comment.answer.length}</Link>}
+                                    {answersShow && <Link style={{ color: "#5E90F2" }} onClick={() => toggleAnswersShow(false)}>Esconder respuestas</Link>}
                                     {answersShow && forum.posts[index].comments[index2].answer.map((answer, index3) =>
-                                        <ListGroup.Item style={{ borderBlockWidth: "0", marginBottom: "2%", marginTop:"1%" }} key={index3} >
+                                        <ListGroup.Item style={{ borderBlockWidth: "0", marginBottom: "2%", marginTop: "1%" }} key={index3} >
                                             <p style={{ marginBottom: "2%", fontWeight: "lighter" }}>{answer.userCreator} | {String(answer.createdAt).substr(0, 10)}</p>
                                             <p>{answer.content}</p>
                                         </ListGroup.Item>

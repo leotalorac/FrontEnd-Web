@@ -8,12 +8,32 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import { Link } from "react-router-dom";
-import axios from "axios";
+import {getForums} from '../helpers'
 import 'bootstrap/dist/css/bootstrap.css';
 
 
 
 function NewForumModal(props) {
+
+  const [newForumName, setNewForumName] = React.useState("")
+  const [newForumCreator, setNewForumCreator] = React.useState("")
+
+  function submitHandler(event){
+    event.preventDefault();
+    console.log(newForumName)
+    console.log(newForumCreator)
+  }
+
+  function changeNameHandler(event){
+    event.preventDefault();
+    setNewForumName(event.target.value)
+  }
+
+  function changeCreatorHandler(event){
+    event.preventDefault();
+    setNewForumCreator(event.target.value)
+  }
+
   return (
     <Modal
       {...props}
@@ -28,11 +48,14 @@ function NewForumModal(props) {
       </Modal.Header>
       <Modal.Body>
 
-        <Form style={{ margin: "3%" }}>
+        <Form onSubmit={submitHandler} style={{ margin: "3%" }}>
           <Form.Group controlId="postTitle">
-            <Form.Control as="textarea" rows="1" placeholder="Título del foro" />
-            <Button style={{ backgroundColor: "#5E90F2", marginTop: "1%" }} >Crear foro</Button>
+            <Form.Control as="textarea" rows="1" placeholder="Título del foro" onChange={changeNameHandler} />
           </Form.Group>
+          <Form.Group controlId="postTitle">
+            <Form.Control as="textarea" rows="1" placeholder="Usuario creador"  onChange={changeCreatorHandler} />
+          </Form.Group>
+          <Button type="submit" style={{ backgroundColor: "#5E90F2", marginTop: "1%" }} >Crear foro</Button>
         </Form>
 
       </Modal.Body>
@@ -54,21 +77,20 @@ const ForumList = () => {
   }])
 
 
+
+
   useEffect(() => {
-    axios.get("http://52.200.134.90:3000/forums").then((res) => {
-      const forumsData = res.data.map((item) => ({
-        value: item,
-      }));
-      const forumList = [];
-      for (let index = 0; index < forumsData.length; index++) {
-        forumList.push(forumsData[index])
-        console.log(forumsData[index])
-      }
-      setForums(forumList)
-    })
-      .catch((error) => {
-        console.log(error);
-      });
+      getForums().then((res) => {
+        const forumsData = res.data.map((item) => ({
+          value: item,
+        }));
+        const forumList = [];
+        for (let index = 0; index < forumsData.length; index++) {
+          forumList.push(forumsData[index])
+         // console.log(forumsData[index])
+        }
+        setForums(forumList)
+    }).catch()
   }, [])
 
   return (
