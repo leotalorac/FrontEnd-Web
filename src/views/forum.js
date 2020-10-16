@@ -129,7 +129,7 @@ const Forum = () => {
                 <Modal.Body>
                     <Form onSubmit={submitPostHandler} style={{ margin: "3%" }}>
                         <Form.Group controlId="postTitle">
-                            <Form.Control as="textarea" rows="1" placeholder="Título" onChange={changePostCreatorHandler} />
+                            <Form.Control as="textarea" rows="1" placeholder="Usuario administrador" onChange={changePostCreatorHandler} />
                         </Form.Group>
                         <Form.Group controlId="postTitle">
                             <Form.Control as="textarea" rows="1" placeholder="Título" onChange={changePostTitleHandler} />
