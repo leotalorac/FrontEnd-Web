@@ -2,7 +2,11 @@ import React, { useEffect } from 'react';
 import ListGroup from 'react-bootstrap/ListGroup'
 import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
+import Form from 'react-bootstrap/Form'
 import Modal from 'react-bootstrap/Modal'
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 import { Link } from "react-router-dom";
 import axios from "axios";
 import 'bootstrap/dist/css/bootstrap.css';
@@ -24,12 +28,14 @@ function NewForumModal(props) {
       </Modal.Header>
       <Modal.Body>
 
-    <h1>Aquí va formulario para crear foro</h1>
+        <Form style={{ margin: "3%" }}>
+          <Form.Group controlId="postTitle">
+            <Form.Control as="textarea" rows="1" placeholder="Título del foro" />
+            <Button style={{ backgroundColor: "#5E90F2", marginTop: "1%" }} >Crear foro</Button>
+          </Form.Group>
+        </Form>
 
       </Modal.Body>
-      <Modal.Footer>
-        <Button onClick={props.onHide}>Close</Button>
-      </Modal.Footer>
     </Modal>
   );
 }
@@ -66,20 +72,44 @@ const ForumList = () => {
   }, [])
 
   return (
-    <Card style={{ margin: '10%' }} >
-      <Button variant="primary" onClick={() => setModalShow(true)}>
-        Crear un nuevo foro
-      </Button>
-      <NewForumModal
-        show={modalShow}
-        onHide={() => setModalShow(false)}
-      />
-      <ListGroup>
-        {forums.map((forum, index) =>
-          <Link key={index} to={"/forum/posts/" + forum.value._id}><ListGroup.Item action variant="light">{forum.value.name}</ListGroup.Item></Link>
-        )}
-      </ListGroup>
-    </Card>
+    <Container>
+      <Row >
+        <Col>
+          <Card style={{ margin: '12%' }} >
+
+          </Card>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <Row>
+            <Col>
+              <h3 style={{ fontWeight: "bold", color: "#5E90F2" }}>Forums</h3>
+            </Col>
+            <Col>
+              <Button style={{ marginLeft: "30%", backgroundColor: "#5E90F2" }} onClick={() => setModalShow(true)}>
+                Crear un nuevo foro
+            </Button>
+              <NewForumModal
+                show={modalShow}
+                onHide={() => setModalShow(false)}
+              />
+            </Col>
+          </Row>
+          <Card style={{ marginTop: "5%" }} >
+            <ListGroup style={{ maxHeight: "250px", overflow: "scroll" }}>
+              {forums.map((forum, index) =>
+                <Link key={index} to={"/forum/posts/" + forum.value._id}><ListGroup.Item action variant="light">{forum.value.name}</ListGroup.Item></Link>
+              )}
+            </ListGroup>
+          </Card>
+        </Col>
+        <Col>
+          <Card style={{ margin: '30%' }} >
+          </Card>
+        </Col>
+      </Row>
+    </Container>
   )
 }
 export default ForumList;
