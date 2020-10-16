@@ -4,7 +4,6 @@ import axios from "axios";
 const FORUM_IP = "http://52.200.134.90:3000"
 //URLS
 const URL_FORUMS = `${FORUM_IP}/forums`;
-const URL_POSTS = `${FORUM_IP}/forums`;
 
 
 
@@ -26,11 +25,30 @@ export const getForums = () => {
   return promise;
 };
 
+//CreateForum
+export const createForum = (userCreator, name) => {
+    let promise = new Promise((resolve, reject) => {
+        axios
+          .post(URL_FORUMS, {
+              userCreator: userCreator,
+              name: name
+          })
+          .then((res) => {
+            resolve(res);
+          })
+          .catch((error) => {
+            console.log(error);
+            reject(new Error(error));
+          });
+      });
+    return promise;
+  };
+
 //GetPosts
 export const getPosts = async (id) => {
     let promise = new Promise((resolve, reject) => {
       axios
-        .get(`${URL_POSTS}/${id}`)
+        .get(`${URL_FORUMS}/${id}`)
         .then((res) => {
           resolve(res);
         })
@@ -39,5 +57,65 @@ export const getPosts = async (id) => {
           reject(error);
         });
     });
+    return promise;
+  };
+
+
+//CreatePost
+export const createPost = async (id, title, content, userCreator) => {
+    let promise = new Promise((resolve, reject) => {
+        axios
+          .post(`${URL_FORUMS}/${id}/posts`, {
+              forum_id:id,
+              title: title,
+              content: content,
+              userCreator: userCreator,
+          })
+          .then((res) => {
+            resolve(res);
+          })
+          .catch((error) => {
+            console.log(error);
+            reject(new Error(error));
+          });
+      });
+    return promise;
+  };
+
+  //CreateComment
+export const createComment = (id, idPost, content, userCreator) => {
+    let promise = new Promise((resolve, reject) => {
+        axios
+          .post(`${URL_FORUMS}/${id}/posts/${idPost}/comments`, {
+              content: content,
+              userCreator: userCreator,
+          })
+          .then((res) => {
+            resolve(res);
+          })
+          .catch((error) => {
+            console.log(error);
+            reject(new Error(error));
+          });
+      });
+    return promise;
+  };
+
+//CreateAnswer
+export const createAnswer = (id, idPost, idComment, content, userCreator) => {
+    let promise = new Promise((resolve, reject) => {
+        axios
+          .post(`${URL_FORUMS}/${id}/posts/${idPost}/comments/${idComment}/answers`, {
+              content: content,
+              userCreator: userCreator,
+          })
+          .then((res) => {
+            resolve(res);
+          })
+          .catch((error) => {
+            console.log(error);
+            reject(new Error(error));
+          });
+      });
     return promise;
   };

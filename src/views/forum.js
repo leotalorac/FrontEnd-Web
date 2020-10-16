@@ -9,42 +9,11 @@ import Col from 'react-bootstrap/Col'
 import Modal from 'react-bootstrap/Modal'
 import Container from 'react-bootstrap/Container'
 import { useParams, Link } from "react-router-dom";
-import axios from "axios";
-import { getPosts } from '../helpers'
+import { getPosts, createPost, createComment, createAnswer } from '../helpers'
 import 'bootstrap/dist/css/bootstrap.css';
 
 
-function NewPostModal(props) {
-    return (
-        <Modal
-            {...props}
-            size="lg"
-            aria-labelledby="contained-modal-title-vcenter"
-            centered
-        >
-            <Modal.Header closeButton>
-                <Modal.Title style={{ color: "#5E90F2", marginBottom: "2%" }} id="contained-modal-title-vcenter">
-                    Nueva publicación
-          </Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
 
-                <Form style={{ margin: "3%" }}>
-                    <Form.Group controlId="postTitle">
-                        <Form.Control as="textarea" rows="1" placeholder="Título" />
-                    </Form.Group>
-                    <Form.Group controlId="postTextarea1">
-                        <Form.Control as="textarea" rows="3" placeholder="Contenido de la publicación" />
-                        <Button style={{ backgroundColor: "#5E90F2", marginTop: "1%" }} >
-                            Publicar
-                        </Button>
-                    </Form.Group>
-                </Form>
-
-            </Modal.Body>
-        </Modal>
-    );
-}
 
 const Forum = () => {
 
@@ -52,6 +21,134 @@ const Forum = () => {
     const [modalShow, setModalShow] = React.useState(false);
     const [commentsShow, toggleCommentsShow] = useState(false);
     const [answersShow, toggleAnswersShow] = useState(false);
+    const [showSuccessModal, setShowSuccessModal] = React.useState(false);
+    const handleSuccessModalClose = () => { setShowSuccessModal(false); window.location.reload(false) }
+
+    const [newCommentContent, setCommentContent] = React.useState("")
+    //const [newCommentCreator, setCommentCreator] = React.useState("")
+    const newCommentCreator = "Marcelo Cifuentes"
+    const [newCommentPostID, setCommentpostID] = React.useState("")
+
+    const [newAnswerContent, setAnswerContent] = React.useState("")
+    //const [newAnswerCreator, setAnswerCreator] = React.useState("")
+    const newAnswerCreator = "Juan Camilo Gómez"
+    const [newAnswerPostID, setAnswerPostID] = React.useState("")
+    const [newAnswerCommentID, setAnswerCommentID] = React.useState("")
+
+    function submitCommentHandler(event) {
+        event.preventDefault();
+        createComment(id, newCommentPostID, newCommentContent, newCommentCreator).then((res) => {
+            console.log(res)
+            setModalShow(false)
+            setShowSuccessModal(true)
+        })
+    }
+
+    function changeCommentContentHandler(event) {
+        event.preventDefault();
+        setCommentContent(event.target.value)
+        setCommentpostID(event.target.name)
+    }
+
+    function submitAnswerHandler(event) {
+        event.preventDefault();
+        createAnswer(id, newAnswerPostID, newAnswerCommentID, newAnswerContent, newAnswerCreator).then((res) => {
+            console.log(res)
+            setModalShow(false)
+            setShowSuccessModal(true)
+        })
+    }
+
+    function changeAnswerContentHandler(event) {
+        event.preventDefault();
+        setAnswerContent(event.target.value)
+        setAnswerPostID(event.target.name.substr(0, 24))
+        setAnswerCommentID(event.target.name.substr(25, 50))
+    }
+
+    function SuccessModal() {
+        return (
+            <>
+                <Modal show={showSuccessModal} onHide={handleSuccessModalClose}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Información suministrada exitosamente</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Footer>
+                        <Button variant="success" onClick={handleSuccessModalClose}>
+                            Ok
+                </Button>
+                    </Modal.Footer>
+                </Modal>
+            </>
+        );
+    }
+
+
+    function NewPostModal(props) {
+
+        const [newPostTitle, setPostTitle] = React.useState("")
+        const [newPostContent, setNewPostContent] = React.useState("")
+        const [newPostCreator, setNewPostCreator] = React.useState("")
+
+        function submitPostHandler(event) {
+            event.preventDefault();
+            createPost(id,newPostTitle, newPostContent, newPostCreator).then((res) => {
+                console.log(res)
+                setModalShow(false)
+                setShowSuccessModal(true)
+            })
+        }
+
+        function changePostTitleHandler(event) {
+            event.preventDefault();
+            setPostTitle(event.target.value)
+        }
+
+        function changePostContentHandler(event) {
+            event.preventDefault();
+            setNewPostContent(event.target.value)
+        }
+
+        function changePostCreatorHandler(event) {
+            event.preventDefault();
+            setNewPostCreator(event.target.value)
+        }
+
+        return (
+            <Modal
+                {...props}
+                size="lg"
+                aria-labelledby="contained-modal-title-vcenter"
+                centered
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title style={{ color: "#5E90F2", marginBottom: "2%" }} id="contained-modal-title-vcenter">
+                        Nueva publicación
+              </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form onSubmit={submitPostHandler} style={{ margin: "3%" }}>
+                        <Form.Group controlId="postTitle">
+                            <Form.Control as="textarea" rows="1" placeholder="Título" onChange={changePostCreatorHandler} />
+                        </Form.Group>
+                        <Form.Group controlId="postTitle">
+                            <Form.Control as="textarea" rows="1" placeholder="Título" onChange={changePostTitleHandler} />
+                        </Form.Group>
+                        <Form.Group controlId="postTextarea1">
+                            <Form.Control as="textarea" rows="3" placeholder="Contenido de la publicación" onChange={changePostContentHandler} />
+                        </Form.Group>
+                        <Button type="submit" style={{ backgroundColor: "#5E90F2", marginTop: "1%" }} >
+                            Publicar
+                        </Button>
+                    </Form>
+                </Modal.Body>
+            </Modal>
+        );
+    }
+
+
+
+
 
     const [forum, setForum] = useState({
         _id: String,
@@ -84,6 +181,7 @@ const Forum = () => {
             const forumData = res.data[0];
             setForum(forumData)
         }).catch()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     //console.log(forum)
@@ -125,20 +223,20 @@ const Forum = () => {
                                             <p>{answer.content}</p>
                                         </ListGroup.Item>
                                     )}
-                                    <Form style={{ marginTop: "1%" }}>
-                                        <Form.Group controlId="answerTextarea1">
-                                            <Form.Control as="textarea" rows="3" />
-                                            <Button style={{ backgroundColor: "#5E90F2", marginTop: "1%" }} >
+                                    <Form onSubmit={submitAnswerHandler} style={{ marginTop: "1%" }}>
+                                        <Form.Group controlId="answerTextarea1" onChange={changeAnswerContentHandler}>
+                                            <Form.Control as="textarea" rows="3" name={post._id +"|"+ comment._id}  />
+                                            <Button type="submit" style={{ backgroundColor: "#5E90F2", marginTop: "1%" }} >
                                                 Responder
                                             </Button>
                                         </Form.Group>
                                     </Form>
                                 </ListGroup.Item>
                             )}
-                            <Form style={{ marginTop: "1%" }}>
-                                <Form.Group controlId="commentTextarea1">
-                                    <Form.Control as="textarea" rows="3" />
-                                    <Button style={{ backgroundColor: "#5E90F2", marginTop: "1%" }} >
+                            <Form onSubmit={submitCommentHandler} style={{ marginTop: "1%" }}>
+                                <Form.Group controlId="commentTextarea1" onChange={changeCommentContentHandler}>
+                                    <Form.Control name={post._id} as="textarea" rows="3" />
+                                    <Button type="submit" style={{ backgroundColor: "#5E90F2", marginTop: "1%" }} >
                                         Comentar
                                   </Button>
                                 </Form.Group>
@@ -147,6 +245,10 @@ const Forum = () => {
                     </Card>
                 )}
             </ListGroup>
+            <SuccessModal
+                show={showSuccessModal}
+                onHide={() => setShowSuccessModal(false)}
+            />
         </Container>
     )
 }

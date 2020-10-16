@@ -8,66 +8,86 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import { Link } from "react-router-dom";
-import {getForums} from '../helpers'
+import { getForums, createForum } from '../helpers'
 import 'bootstrap/dist/css/bootstrap.css';
-
-
-
-function NewForumModal(props) {
-
-  const [newForumName, setNewForumName] = React.useState("")
-  const [newForumCreator, setNewForumCreator] = React.useState("")
-
-  function submitHandler(event){
-    event.preventDefault();
-    console.log(newForumName)
-    console.log(newForumCreator)
-  }
-
-  function changeNameHandler(event){
-    event.preventDefault();
-    setNewForumName(event.target.value)
-  }
-
-  function changeCreatorHandler(event){
-    event.preventDefault();
-    setNewForumCreator(event.target.value)
-  }
-
-  return (
-    <Modal
-      {...props}
-      size="lg"
-      aria-labelledby="contained-modal-title-vcenter"
-      centered
-    >
-      <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter">
-          Nuevo foro
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-
-        <Form onSubmit={submitHandler} style={{ margin: "3%" }}>
-          <Form.Group controlId="postTitle">
-            <Form.Control as="textarea" rows="1" placeholder="Título del foro" onChange={changeNameHandler} />
-          </Form.Group>
-          <Form.Group controlId="postTitle">
-            <Form.Control as="textarea" rows="1" placeholder="Usuario creador"  onChange={changeCreatorHandler} />
-          </Form.Group>
-          <Button type="submit" style={{ backgroundColor: "#5E90F2", marginTop: "1%" }} >Crear foro</Button>
-        </Form>
-
-      </Modal.Body>
-    </Modal>
-  );
-}
-
 
 
 const ForumList = () => {
 
   const [modalShow, setModalShow] = React.useState(false);
+  const [showSuccessModal, setShowSuccessModal] = React.useState(false);
+  const handleSuccessModalClose = () => {setShowSuccessModal(false); window.location.reload(false)}
+
+  function SuccessModal() {
+    return (
+      <>
+        <Modal show={showSuccessModal} onHide={handleSuccessModalClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Información suministrada exitosamente</Modal.Title>
+          </Modal.Header>
+          <Modal.Footer>
+            <Button variant="success" onClick={handleSuccessModalClose}>
+              Ok
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </>
+    );
+  }
+
+  function NewForumModal(props) {
+
+    const [newForumName, setNewForumName] = React.useState("")
+    const [newForumCreator, setNewForumCreator] = React.useState("")
+
+    function submitHandler(event) {
+      event.preventDefault();
+      createForum(newForumCreator, newForumName).then((res) => {
+        setModalShow(false)
+        setShowSuccessModal(true)
+      })
+    }
+
+    function changeNameHandler(event) {
+      event.preventDefault();
+      setNewForumName(event.target.value)
+    }
+
+    function changeCreatorHandler(event) {
+      event.preventDefault();
+      setNewForumCreator(event.target.value)
+    }
+
+    return (
+      <Modal
+        {...props}
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">
+            Nuevo foro
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+
+          <Form onSubmit={submitHandler} style={{ margin: "3%" }}>
+            <Form.Group controlId="postTitle">
+              <Form.Control as="textarea" rows="1" placeholder="Título del foro" onChange={changeNameHandler} />
+            </Form.Group>
+            <Form.Group controlId="postTitle">
+              <Form.Control as="textarea" rows="1" placeholder="Usuario creador" onChange={changeCreatorHandler} />
+            </Form.Group>
+            <Button type="submit" style={{ backgroundColor: "#5E90F2", marginTop: "1%" }} >Crear foro</Button>
+          </Form>
+
+        </Modal.Body>
+      </Modal>
+    );
+  }
+
+
 
   const [forums, setForums] = React.useState([{
     value: {
@@ -77,19 +97,17 @@ const ForumList = () => {
   }])
 
 
-
-
   useEffect(() => {
-      getForums().then((res) => {
-        const forumsData = res.data.map((item) => ({
-          value: item,
-        }));
-        const forumList = [];
-        for (let index = 0; index < forumsData.length; index++) {
-          forumList.push(forumsData[index])
-         // console.log(forumsData[index])
-        }
-        setForums(forumList)
+    getForums().then((res) => {
+      const forumsData = res.data.map((item) => ({
+        value: item,
+      }));
+      const forumList = [];
+      for (let index = 0; index < forumsData.length; index++) {
+        forumList.push(forumsData[index])
+        
+      }
+      setForums(forumList)
     }).catch()
   }, [])
 
@@ -115,6 +133,10 @@ const ForumList = () => {
               <NewForumModal
                 show={modalShow}
                 onHide={() => setModalShow(false)}
+              />
+              <SuccessModal
+                show={showSuccessModal}
+                onHide={() => setShowSuccessModal(false)}
               />
             </Col>
           </Row>
