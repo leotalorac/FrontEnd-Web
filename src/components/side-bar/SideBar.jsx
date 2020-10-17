@@ -48,7 +48,7 @@ class SideBar extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            expanded: true
+            expanded: true  
         }
     }
 
@@ -56,10 +56,10 @@ class SideBar extends React.Component {
         const {expanded} = this.state;
         const navItems = this.props.data.map((row) => {
             return (
-                <NavItem eventKey={row.id} key={row.id} style={{height: "60px"}}
+                <NavItem eventKey={row.id} key={row.id} style={{height: "60px",backgroundColor: "#5E90F2"}}
                          className={"mt-0"}>
-                    <NavText style={{color: "#000", marginLeft: "20px", display: "true"}}>
-                        <img src={"/icons/"+row.icon+".png"} style={{width: "20px", color: "#A30021", marginRight: "10px"}} alt=""/>
+                    <NavText style={{color: "#fff", marginLeft: "20px", display: "true",backgroundColor: "#5E90F2"}}>
+                        {/* <img src={"/icons/"+row.icon+".png"} style={{width: "20px", color: "#A30021", marginRight: "10px"}} alt=""/> */}
                         {row.text}
                     </NavText>
                     <Separator/>
