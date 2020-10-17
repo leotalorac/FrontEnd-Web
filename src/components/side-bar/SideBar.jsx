@@ -4,12 +4,12 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 import styled from 'styled-components';
 import {Col, Image, Row} from "react-bootstrap";
-import Logo from "../../assets/images/logo.png";
+import Logo from "../../assets/images/logo_n.png";
 import {faUserCircle} from "@fortawesome/free-solid-svg-icons";
 
 
 // const navWidthCollapsed = 64;
-const navWidthExpanded = 300;
+const navWidthExpanded = 250;
 
 const NavHeader = styled.div`
     display: ${props => (props.expanded ? 'block' : 'none')};
@@ -58,11 +58,11 @@ class SideBar extends React.Component {
             return (
                 <NavItem eventKey={row.id} key={row.id} style={{height: "60px",backgroundColor: "#5E90F2"}}
                          className={"mt-0"}>
-                    <NavText style={{color: "#fff", marginLeft: "20px", display: "true",backgroundColor: "#5E90F2"}}>
-                        {/* <img src={"/icons/"+row.icon+".png"} style={{width: "20px", color: "#A30021", marginRight: "10px"}} alt=""/> */}
+                    <NavText style={{color: "#fff", display: "true",backgroundColor: "#5E90F2", fontSize:"18px"}}>
+                        <img src={"/icons/"+row.icon+".png"} style={{width: "20px", color: "#fff", marginRight: "10px", marginLeft:"70px"}} alt=""/>
                         {row.text}
                     </NavText>
-                    <Separator/>
+                    <Separator className={"mt-2"} />
                 </NavItem>
 
             );
@@ -83,7 +83,7 @@ class SideBar extends React.Component {
                 <NavHeader expanded={expanded} style={{backgroundColor: "#fff"}}>
                     <NavTitle>
                         <i><Image className={"ml-2 mb-1"} src={Logo} style={{height: "60px"}} fluid/></i>
-                        <p style={{display: "inline", fontSize: "25px", marginLeft: "35px", color: "#000"}}
+                        <p style={{display: "inline", fontSize: "25px", marginLeft: "35px", color: "#5E90F2 "}}
                            className={"mt-2"}>WeStudy </p>
                     </NavTitle>
                     <NavInfoPane style={{backgroundColor: "#5E90F2", backgroundPosition: "center", minHeight: "50px"}}>

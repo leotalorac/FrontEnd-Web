@@ -21,7 +21,13 @@ class Class extends React.Component{
 		const data = [
 			{
 				id:1, 
-				text:"hello"
+				text:"My Courses",
+				icon:"courses"
+			},
+			{
+				id:2, 
+				text:"Go Back",
+				icon:"back"
 			},
 		]
 		return(
