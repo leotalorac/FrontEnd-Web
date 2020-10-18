@@ -5,15 +5,63 @@ import SideBar from "../../components/side-bar/SideBar";
 import Logo from "../../assets/images/logo_n.png";
 import ResourceList from "../../components/resourceList/resourceList.component";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Button from "react-bootstrap/Button";
-import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+import {Button, Col, Row} from "react-bootstrap";
+import { faPlusCircle, faSearch } from "@fortawesome/free-solid-svg-icons";
+import TopNav from "../../components/topNav/topNav.component"
+import ModalResource from "../../components/modalResource/modalResource.component"
+
 class Class extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+		resources:[],
+		showModal:false
+	};
   }
 
-  handlerSelect = (key) => {};
+  componentDidMount(){
+	const data2 = [
+		{
+		  name: "Bryan Daniel Gomez",
+		  text:
+			"Este es el link de la clase de hoy: https://drive.google.com/drive/u/0/folders/1biPKmkQuVkx9RPTC1Fi2VCAN6h1enpnA",
+		  icon: "daniel",
+		},
+		{
+		  name: "Bryan Daniel Gomez",
+		  text: "My Courses",
+		  icon: "daniel",
+		},
+		{
+		  name: "Bryan Daniel Gomez",
+		  text: "My Courses",
+		  icon: "juan",
+		},
+		{
+		  name: "Bryan Daniel Gomez",
+		  text: "My Courses",
+		  icon: "juan",
+		},
+	  ];
+	  this.setState({resources:data2});
+  }
+
+  handlerSelect = (key) => {
+	  alert("clicked: " + key)
+  };
+  handlerSearch = (e) => {};
+
+  handlerClick = (e) => {
+	  alert("click")
+  };
+
+  handleShowModal = () => {
+	  this.setState({showModal:true});
+  }
+
+  handleCloseModal = () => {
+	this.setState({showModal:false});
+}
 
   render() {
     const data = [
@@ -28,53 +76,23 @@ class Class extends React.Component {
         icon: "back",
       },
     ];
-    const data2 = [
-      {
-        name: "Bryan Daniel Gomez",
-        text:
-          "Este es el link de la clase de hoy: https://drive.google.com/drive/u/0/folders/1biPKmkQuVkx9RPTC1Fi2VCAN6h1enpnA",
-        icon: "daniel",
-      },
-      {
-        name: "Bryan Daniel Gomez",
-        text: "My Courses",
-        icon: "daniel",
-      },
-      {
-        name: "Bryan Daniel Gomez",
-        text: "My Courses",
-        icon: "juan",
-      },
-      {
-        name: "Bryan Daniel Gomez",
-        text: "My Courses",
-        icon: "juan",
-      },
-    ];
+    
 
     return (
       <div>
         <SideBar data={data} handler={this.handlerSelect} />
 
         <div className="content">
-          <Button
-            type="submit"
-            style={{ backgroundColor: "#5E90F2", marginTop: "1%" }}
-          >
-            <FontAwesomeIcon
-              icon={faPlusCircle}
-              style={{ fontSize: "1.5em", color: "#fff", marginRight: "0.3em" }}
-            />
-            Crear Recurso
-          </Button>
 
+		 <TopNav handlerSearch={this.handlerSearch} text="Crear Recurso" handlerClick={this.handlerClick} />
+		{/* <ModalResource show={this.state.showModal} handleShow={this.handleShowModal} handleClose={this.handleCloseModal} /> */}
           <h1 className="title">
             Software Architecture {">"}
             {">"} October 12{" "}
           </h1>
           <h5 className="subtitle">Resources</h5>
           <hr />
-          <ResourceList data={data2} />
+          <ResourceList data={this.state.resources} />
         </div>
       </div>
     );

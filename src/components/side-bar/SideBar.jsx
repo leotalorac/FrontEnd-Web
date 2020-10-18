@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import {Col, Image, Row} from "react-bootstrap";
 import Logo from "../../assets/images/logo_n.png";
 import {faUserCircle} from "@fortawesome/free-solid-svg-icons";
+import "./SideBar.styles.css"
 
 
 // const navWidthCollapsed = 64;
@@ -69,7 +70,7 @@ class SideBar extends React.Component {
         });
         return (
             <SideNav
-
+                className="sticky"
                 style={{minWidth: expanded ? navWidthExpanded : navWidthExpanded, backgroundColor:"#5E90F2"}}
                 onSelect={(selected) => {
                     this.props.handler(selected);
