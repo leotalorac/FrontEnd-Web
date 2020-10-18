@@ -1,9 +1,8 @@
 import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import forumList from './components/forumList'
-import Forum from './views/forum'
 
+import Course from './components/CourseComponent';
 function App() {
   return (
     <Router>
@@ -11,8 +10,9 @@ function App() {
         return <h1>Hi</h1>
       }}>
       </Route>
-      <Route exact path="/forum" component={forumList}></Route>
-      <Route exact path="/forum/posts/:id" component={Forum}></Route>
+      <div>
+        <Course/>
+      </div>
     </Router>
 
   );

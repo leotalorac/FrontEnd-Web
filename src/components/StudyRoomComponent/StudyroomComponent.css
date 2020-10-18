@@ -1,0 +1,49 @@
+#SingleStudyRoom{
+    margin-top: 3%;
+    border-radius: 15px;
+}
+#CreateNewSRButton{
+    margin-top: 2%;
+    border-radius: 5px;
+    vertical-align: middle;
+    border-color: #5E90F2;
+    background-color: #5E90F2;
+    vertical-align: middle;
+    margin-left: 25%;
+}
+
+#StudyroomsContainer{
+    display: table;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    width: 60%;
+}
+#StudyroomsTitle{
+    text-align: center;
+    color: #5E90F2;
+    font-weight: 600;
+}
+#StudyroomsList{
+    max-height: 300px;
+    overflow: scroll;
+    overflow-x: hidden;
+}
+.subTitles{
+    font-size: 12px;
+    color: #5E90F2;
+}
+
+#StudyroomDetailsFooter{
+    background-color: #5E90F2;
+}
+#TitleAlert{
+    color: cornsilk;
+    font-size: 0.9rem;
+}
+#ContainerAlert {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    width: 80% !important;
+  }
+
