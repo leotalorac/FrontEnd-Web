@@ -1,6 +1,8 @@
 import React,  {Component} from 'react';
 import StudyRoom from './StudyRoomComponent/StudyroomComponent';
 import { STUDYROOMS} from '../shared/studyrooms';
+import ForumList from '../components/forumList'
+
 
 
 class Course extends Component{
@@ -13,7 +15,6 @@ class Course extends Component{
     }
     
     render(){
-        const CoursesPage = () => {
             return(
                 <div className="col">
                     <div className="row">
@@ -21,7 +22,7 @@ class Course extends Component{
                     </div>
                     <div className="row">
                         <div className="col">
-                            <h2>Aqui va forum List</h2>
+                            <ForumList/>
                         </div>
                         <div className="col">
                             <StudyRoom studyrooms={this.state.studyrooms}/>
@@ -30,13 +31,8 @@ class Course extends Component{
                 </div>
                 
             );
-        }
 
-        return(
-            <div>
-               {CoursesPage}
-            </div>
-        );
+      
     }
   
 }
