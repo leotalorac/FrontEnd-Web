@@ -7,6 +7,7 @@ import Register from './views/register'
 import forumList from './components/forumList'
 import Class from "./views/class/class.component"
 
+import Course from './components/CourseComponent';
 function App() {
   return (  
     <Router>
