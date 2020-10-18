@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-
 import ListGroup from 'react-bootstrap/ListGroup'
 import Card from 'react-bootstrap/Card'
 import Form from 'react-bootstrap/Form'
@@ -9,8 +8,9 @@ import Col from 'react-bootstrap/Col'
 import Modal from 'react-bootstrap/Modal'
 import Container from 'react-bootstrap/Container'
 import { useParams, Link } from "react-router-dom";
-import { getPosts, createPost, createComment, createAnswer } from '../helpers'
+import { getPosts, createPost, createComment, createAnswer } from '../../helpers'
 import 'bootstrap/dist/css/bootstrap.css';
+//import ForumList from '../../components/forumList'
 
 
 
@@ -129,7 +129,7 @@ const Forum = () => {
                 <Modal.Body>
                     <Form onSubmit={submitPostHandler} style={{ margin: "3%" }}>
                         <Form.Group controlId="postTitle">
-                            <Form.Control as="textarea" rows="1" placeholder="Usuario administrador" onChange={changePostCreatorHandler} />
+                            <Form.Control as="textarea" rows="1" placeholder="Usuario creador" onChange={changePostCreatorHandler} />
                         </Form.Group>
                         <Form.Group controlId="postTitle">
                             <Form.Control as="textarea" rows="1" placeholder="Título" onChange={changePostTitleHandler} />
@@ -145,9 +145,6 @@ const Forum = () => {
             </Modal>
         );
     }
-
-
-
 
 
     const [forum, setForum] = useState({
@@ -188,6 +185,7 @@ const Forum = () => {
 
     return (
         <Container style={{ margin: '5%' }}>
+            
             <Row>
                 <Col>
                     <h1 style={{ fontWeight: "bold", color: "#5E90F2" }}>{forum.name}</h1>
@@ -205,19 +203,25 @@ const Forum = () => {
             <p>Usuario administrador: {forum.userCreator}</p>
             <ListGroup>
                 {forum.posts.map((post, index) =>
+
                     <Card style={{ marginBottom: '2%', backgroundColor: "#5E90F2" }}>
                         <Card.Header style={{ color: "white", fontWeight: "bold" }}>{post.title} | {post.userCreator}</Card.Header>
+
                         <ListGroup.Item key={index} >
                             <p style={{ marginBottom: "5%" }}>{post.content}</p>
                             {post.comments.length !== 0 && !commentsShow && <Link style={{ color: "#5E90F2" }} onClick={() => toggleCommentsShow(true)}>Mostrar comentarios: {post.comments.length}</Link>}
                             {commentsShow && <Link style={{ color: "#5E90F2" }} onClick={() => toggleCommentsShow(false)}>Esconder comentarios</Link>}
+
                             {commentsShow && forum.posts[index].comments.map((comment, index2) =>
+                            
                                 <ListGroup.Item style={{ marginBottom: "2%", marginTop: "1%" }} key={index2} >
                                     <p style={{ fontWeight: "lighter" }}>{comment.userCreator} | {String(comment.createdAt).substr(0, 10)}</p>
                                     <p>{comment.content}</p>
                                     {comment.answer.length !== 0 && !answersShow && <Link style={{ color: "#5E90F2" }} onClick={() => toggleAnswersShow(true)}>Mostrar respuestas: {comment.answer.length}</Link>}
                                     {answersShow && <Link style={{ color: "#5E90F2" }} onClick={() => toggleAnswersShow(false)}>Esconder respuestas</Link>}
+
                                     {answersShow && forum.posts[index].comments[index2].answer.map((answer, index3) =>
+
                                         <ListGroup.Item style={{ borderBlockWidth: "0", marginBottom: "2%", marginTop: "1%" }} key={index3} >
                                             <p style={{ marginBottom: "2%", fontWeight: "lighter" }}>{answer.userCreator} | {String(answer.createdAt).substr(0, 10)}</p>
                                             <p>{answer.content}</p>
@@ -243,6 +247,7 @@ const Forum = () => {
                             </Form>
                         </ListGroup.Item>
                     </Card>
+
                 )}
             </ListGroup>
             <SuccessModal

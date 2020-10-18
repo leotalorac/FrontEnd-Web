@@ -12,6 +12,7 @@ import { getForums, createForum } from '../helpers'
 import 'bootstrap/dist/css/bootstrap.css';
 
 
+
 const ForumList = () => {
 
   const [modalShow, setModalShow] = React.useState(false);
@@ -113,15 +114,6 @@ const ForumList = () => {
 
   return (
     <Container>
-      <Row >
-        <Col>
-          <Card style={{ margin: '12%' }} >
-
-          </Card>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
           <Row>
             <Col>
               <h3 style={{ fontWeight: "bold", color: "#5E90F2" }}>Forums</h3>
@@ -147,12 +139,6 @@ const ForumList = () => {
               )}
             </ListGroup>
           </Card>
-        </Col>
-        <Col>
-          <Card style={{ margin: '30%' }} >
-          </Card>
-        </Col>
-      </Row>
     </Container>
   )
 }

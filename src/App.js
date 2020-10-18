@@ -1,8 +1,9 @@
 import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import forumList from './components/forumList'
-import Forum from './views/forum'
+import Forum from './views/forum/forum'
+import Login from './views/login'
+import Register from './views/register'
 
 function App() {
   return (
@@ -11,7 +12,8 @@ function App() {
         return <h1>Hi</h1>
       }}>
       </Route>
-      <Route exact path="/forum" component={forumList}></Route>
+      <Route exact path="/login" component={Login}></Route>
+      <Route exact path="/register" component={Register}></Route>
       <Route exact path="/forum/posts/:id" component={Forum}></Route>
     </Router>
 

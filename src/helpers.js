@@ -2,12 +2,43 @@ import axios from "axios";
 
 // IP's
 const FORUM_IP = "http://52.200.134.90:3000"
+//const GraphQL_URL = "http://3.138.86.155:5000/graphiql"
 //URLS
 const URL_FORUMS = `${FORUM_IP}/forums`;
 
 
 
 //Requests
+
+/*export const getForums = () => {
+  let promise = new Promise((resolve, reject) => {
+    axios
+      .post(GraphQL_URL, {
+        query:`
+          getForums{
+            name,
+            _id
+          }
+        `,
+        variables: {}
+      },
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      )
+      .then((res) => {
+        console.log(res)
+        resolve(res);
+      })
+      .catch((error) => {
+        console.log(error);
+        reject(error);
+      });
+  });
+  return promise;
+};*/
 
 //GetForums
 export const getForums = () => {
