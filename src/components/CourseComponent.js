@@ -1,10 +1,8 @@
 import React,  {Component} from 'react';
 import StudyRoom from './StudyRoomComponent/StudyroomComponent';
 import { STUDYROOMS} from '../shared/studyrooms';
-import forumList from './forumList'
-import Forum from '../views/forum'
 
-import { Switch, Route, Redirect} from 'react-router-dom';
+
 class Course extends Component{
     constructor(props){
         super(props);
@@ -36,11 +34,7 @@ class Course extends Component{
 
         return(
             <div>
-                <Switch>
-                    <Route path="/course" component={CoursesPage} />
-                    <Route exact path="/forum" component={forumList}></Route>
-                    <Route exact path="/forum/posts/:id" component={Forum}></Route>
-                </Switch>
+               {CoursesPage}
             </div>
         );
     }
