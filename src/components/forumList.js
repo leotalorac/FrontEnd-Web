@@ -100,7 +100,8 @@ const ForumList = () => {
 
   useEffect(() => {
     getForums().then((res) => {
-      const forumsData = res.data.map((item) => ({
+      console.log(res.data.data)
+      const forumsData = res.data.data.getForums.map((item) => ({
         value: item,
       }));
       const forumList = [];

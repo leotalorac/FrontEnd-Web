@@ -10,7 +10,7 @@ import Container from 'react-bootstrap/Container'
 import { useParams, Link } from "react-router-dom";
 import { getPosts, createPost, createComment, createAnswer } from '../../helpers'
 import 'bootstrap/dist/css/bootstrap.css';
-//import ForumList from '../../components/forumList'
+import ForumList from '../../components/forumList'
 
 
 
