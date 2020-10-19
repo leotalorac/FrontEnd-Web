@@ -2,7 +2,7 @@ import axios from "axios";
 
 // IP's
 const FORUM_IP = "http://52.200.134.90:3000"
-const GraphQL_URL = "http://3.138.86.155:5000/graphql"
+const GraphQL_URL = "http://3.138.86.155/graphql"
 //URLS
 const URL_FORUMS = `${FORUM_IP}/forums`;
 
@@ -58,12 +58,31 @@ export const getForums = () => {
   return promise;
 };*/
 
+
+//GetPosts
+export const getForumsByCourse = async (id) => {
+  let promise = new Promise((resolve, reject) => {
+    axios
+      .get(`${FORUM_IP}/forumsByCourse/${id}`)
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((error) => {
+        console.log(error);
+        reject(error);
+      });
+  });
+  return promise;
+};
+
 //CreateForum
-export const createForum = (userCreator, name) => {
+export const createForum = (userCreator, userCreator_id, course_id, name) => {
     let promise = new Promise((resolve, reject) => {
         axios
           .post(URL_FORUMS, {
               userCreator: userCreator,
+              userCreator_id: userCreator_id,
+              course_id: course_id,
               name: name
           })
           .then((res) => {
@@ -95,7 +114,7 @@ export const getPosts = async (id) => {
 
 
 //CreatePost
-export const createPost = async (id, title, content, userCreator) => {
+export const createPost = async (id, title, content, userCreator, userCreator_id) => {
     let promise = new Promise((resolve, reject) => {
         axios
           .post(`${URL_FORUMS}/${id}/posts`, {
@@ -103,6 +122,7 @@ export const createPost = async (id, title, content, userCreator) => {
               title: title,
               content: content,
               userCreator: userCreator,
+              userCreator_id: userCreator_id
           })
           .then((res) => {
             resolve(res);
@@ -116,12 +136,13 @@ export const createPost = async (id, title, content, userCreator) => {
   };
 
   //CreateComment
-export const createComment = (id, idPost, content, userCreator) => {
+export const createComment = (id, idPost, content, userCreator, userCreator_id) => {
     let promise = new Promise((resolve, reject) => {
         axios
           .post(`${URL_FORUMS}/${id}/posts/${idPost}/comments`, {
               content: content,
               userCreator: userCreator,
+              userCreator_id
           })
           .then((res) => {
             resolve(res);
@@ -135,12 +156,13 @@ export const createComment = (id, idPost, content, userCreator) => {
   };
 
 //CreateAnswer
-export const createAnswer = (id, idPost, idComment, content, userCreator) => {
+export const createAnswer = (id, idPost, idComment, content, userCreator, userCreator_id) => {
     let promise = new Promise((resolve, reject) => {
         axios
           .post(`${URL_FORUMS}/${id}/posts/${idPost}/comments/${idComment}/answers`, {
               content: content,
               userCreator: userCreator,
+              userCreator_id: userCreator_id
           })
           .then((res) => {
             resolve(res);

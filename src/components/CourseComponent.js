@@ -1,4 +1,5 @@
 import React,  {Component} from 'react';
+import { withRouter} from "react-router"    ;
 import StudyRoom from './StudyRoomComponent/StudyroomComponent';
 import { STUDYROOMS} from '../shared/studyrooms';
 import ForumList from '../components/forumList'
@@ -11,6 +12,7 @@ class Course extends Component{
 
         this.state = {
             studyrooms: STUDYROOMS,
+            course_id: this.props.match.params.course_id
         };
     }
     
@@ -22,7 +24,7 @@ class Course extends Component{
                     </div>
                     <div className="row">
                         <div className="col">
-                            <ForumList/>
+                            <ForumList course_id = {this.state.course_id} />
                         </div>
                         <div className="col">
                             <StudyRoom studyrooms={this.state.studyrooms}/>

@@ -37,7 +37,7 @@ const Forum = () => {
 
     function submitCommentHandler(event) {
         event.preventDefault();
-        createComment(id, newCommentPostID, newCommentContent, newCommentCreator).then((res) => {
+        createComment(id, newCommentPostID, newCommentContent, newCommentCreator, "0").then((res) => {
             console.log(res)
             setModalShow(false)
             setShowSuccessModal(true)
@@ -52,7 +52,7 @@ const Forum = () => {
 
     function submitAnswerHandler(event) {
         event.preventDefault();
-        createAnswer(id, newAnswerPostID, newAnswerCommentID, newAnswerContent, newAnswerCreator).then((res) => {
+        createAnswer(id, newAnswerPostID, newAnswerCommentID, newAnswerContent, newAnswerCreator, "0").then((res) => {
             console.log(res)
             setModalShow(false)
             setShowSuccessModal(true)
@@ -92,7 +92,7 @@ const Forum = () => {
 
         function submitPostHandler(event) {
             event.preventDefault();
-            createPost(id,newPostTitle, newPostContent, newPostCreator).then((res) => {
+            createPost(id,newPostTitle, newPostContent, newPostCreator, "0").then((res) => {
                 console.log(res)
                 setModalShow(false)
                 setShowSuccessModal(true)
