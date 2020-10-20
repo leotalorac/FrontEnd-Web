@@ -42,28 +42,29 @@ export const getForums = () => {
   return promise;
 };
 
-//GetForums
-/*export const getForums = () => {
-  let promise = new Promise((resolve, reject) => {
-    axios
-      .get(URL_FORUMS)
-      .then((res) => {
-        resolve(res);
-      })
-      .catch((error) => {
-        console.log(error);
-        reject(error);
-      });
-  });
-  return promise;
-};*/
-
 
 //GetPosts
 export const getForumsByCourse = async (id) => {
   let promise = new Promise((resolve, reject) => {
     axios
-      .get(`${FORUM_IP}/forumsByCourse/${id}`)
+      .post(GraphQL_URL,
+        {
+          query:`
+          query{
+            getForumsByCourse(course_id:"${id}"){
+              name,
+              _id
+            }
+          }
+          `,
+          variables: {}
+        },
+          {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          }
+        )
       .then((res) => {
         resolve(res);
       })
@@ -79,12 +80,22 @@ export const getForumsByCourse = async (id) => {
 export const createForum = (userCreator, userCreator_id, course_id, name) => {
     let promise = new Promise((resolve, reject) => {
         axios
-          .post(URL_FORUMS, {
-              userCreator: userCreator,
-              userCreator_id: userCreator_id,
-              course_id: course_id,
-              name: name
-          })
+          .post(GraphQL_URL,
+            {
+              query:`
+              mutation{
+                createForum(forum:{name:"${name}", userCreator:"${userCreator}", userCreator_id: "${userCreator_id}",course_id: "${course_id}"}){
+                  name
+                }
+              }
+              `
+            },
+              {
+                headers: {
+                  'Content-Type': 'application/json'
+                }
+              }
+            )
           .then((res) => {
             resolve(res);
           })
@@ -117,13 +128,22 @@ export const getPosts = async (id) => {
 export const createPost = async (id, title, content, userCreator, userCreator_id) => {
     let promise = new Promise((resolve, reject) => {
         axios
-          .post(`${URL_FORUMS}/${id}/posts`, {
-              forum_id:id,
-              title: title,
-              content: content,
-              userCreator: userCreator,
-              userCreator_id: userCreator_id
-          })
+          .post(GraphQL_URL,
+            {
+              query:`
+              mutation{
+                createPost(_idForum:"${id}", post:{title:"${title}", content:"${content}", userCreator:"${userCreator}", userCreator_id:"${userCreator_id}", forum_id:"${id}"}){
+                  content
+                }
+              }
+              `
+            },
+              {
+                headers: {
+                  'Content-Type': 'application/json'
+                }
+              }
+            )
           .then((res) => {
             resolve(res);
           })
@@ -139,11 +159,22 @@ export const createPost = async (id, title, content, userCreator, userCreator_id
 export const createComment = (id, idPost, content, userCreator, userCreator_id) => {
     let promise = new Promise((resolve, reject) => {
         axios
-          .post(`${URL_FORUMS}/${id}/posts/${idPost}/comments`, {
-              content: content,
-              userCreator: userCreator,
-              userCreator_id
-          })
+          .post(GraphQL_URL,
+            {
+              query:`
+              mutation{
+                createPostComment(_idForum:"${id}", _idPost:"${idPost}", postComment:{content:"${content}", userCreator:"${userCreator}", userCreator_id:"${userCreator_id}"}){
+                  content
+                }
+              }
+              `
+            },
+              {
+                headers: {
+                  'Content-Type': 'application/json'
+                }
+              }
+            )
           .then((res) => {
             resolve(res);
           })
@@ -159,11 +190,22 @@ export const createComment = (id, idPost, content, userCreator, userCreator_id) 
 export const createAnswer = (id, idPost, idComment, content, userCreator, userCreator_id) => {
     let promise = new Promise((resolve, reject) => {
         axios
-          .post(`${URL_FORUMS}/${id}/posts/${idPost}/comments/${idComment}/answers`, {
-              content: content,
-              userCreator: userCreator,
-              userCreator_id: userCreator_id
-          })
+          .post(GraphQL_URL,
+            {
+              query:`
+                mutation{
+                  createCommentAnswer(_idForum:"${id}", _idPost:"${idPost}",_idComment:"${idComment}", answer:{content:"${content}", userCreator:"${userCreator}", userCreator_id:"${userCreator_id}"}){
+                    content
+                  }
+                }
+              `
+            },
+              {
+                headers: {
+                  'Content-Type': 'application/json'
+                }
+              }
+            )
           .then((res) => {
             resolve(res);
           })
@@ -209,3 +251,42 @@ export const createAnswer = (id, idPost, idComment, content, userCreator, userCr
     });
     return promise;
   };
+
+
+  //Get notes by class
+
+  export const getNotesByClass = (id) => {
+    let promise = new Promise((resolve, reject) => {
+      axios
+        .post(GraphQL_URL, {
+          query:`
+          query{
+            getNotesByClass(id_course:${id}){
+              id_note
+              content
+              id_user
+              score
+              id_course
+            }
+          }
+          `,
+          variables: {}
+        },
+          {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          }
+        )
+        .then((res) => {
+          resolve(res);
+        })
+        .catch((error) => {
+          console.log(error);
+          reject(error);
+        });
+    });
+    return promise;
+  };
+
+ 

@@ -4,17 +4,20 @@ import { withRouter } from "react-router-dom";
 import SideBar from "../../components/side-bar/SideBar";
 import Logo from "../../assets/images/logo_n.png";
 import ResourceList from "../../components/resourceList/resourceList.component";
+import Notes from "../../components/notes/notes"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {Button, Col, Row} from "react-bootstrap";
 import { faPlusCircle, faSearch } from "@fortawesome/free-solid-svg-icons";
 import TopNav from "../../components/topNav/topNav.component"
 import ModalResource from "../../components/modalResource/modalResource.component"
+import {getNotesByClass} from "../../helpers"
 
 class Class extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-		resources:[],
+    resources:[],
+    notes:[],
 		showModal:false
 	};
   }
@@ -43,8 +46,23 @@ class Class extends React.Component {
 		  icon: "juan",
 		},
 	  ];
-	  this.setState({resources:data2});
+    this.setState({resources:data2});
+    
+
+    getNotesByClass(1).then((res) => {
+      const notesData = res.data.data.getNotesByClass.map((item) => ({
+        value: item,
+      }));
+      const notesList = [];
+      for (let index = 0; index < notesData.length; index++) {
+        notesList.push(notesData[index])
+      }
+      this.setState({notes:notesList})
+    }).catch()
+
   }
+
+  
 
   handlerSelect = (key) => {
 	  alert("clicked: " + key)
@@ -93,6 +111,9 @@ class Class extends React.Component {
           <h5 className="subtitle">Resources</h5>
           <hr />
           <ResourceList data={this.state.resources} />
+          <h5 className="subtitle">Notes</h5>
+          <hr />
+          <Notes data={this.state.notes} />
         </div>
       </div>
     );

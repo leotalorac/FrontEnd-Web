@@ -103,8 +103,8 @@ const ForumList = (course_id) => {
     getForumsByCourse(course_id.course_id).then((res) => {
       console.log(res.data.data)
       console.log(course_id.course_id)
-      //const forumsData = res.data.data.getForums.map((item) => ({
-        const forumsData = res.data.map((item) => ({
+      const forumsData = res.data.data.getForumsByCourse.map((item) => ({
+        //const forumsData = res.data.map((item) => ({
         value: item,
       }));
       const forumList = [];
