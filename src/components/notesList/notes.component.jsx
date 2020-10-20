@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Pagination from "react-bootstrap/Pagination";
+import Container from 'react-bootstrap/Container'
+import "./notes.styles.css"
+
 const Notes = (props) => {
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -17,20 +20,26 @@ const Notes = (props) => {
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
 
-  const notes = props.notes.map(row => {
-    return(
-        <p>{row.name}</p>
+  const notes = props.notes.map((row,i) => {
+    return (
+      <li className="card-element" >
+    <a href="#">
+    <h2 className="card-title" >Title {<i></i>}</h2>
+      <p className="card-content">{row.value.content}</p>
+    </a>
+  </li>
     );
-});
+  });
 
   const currentNotes = notes.slice(indexOfFirstPost, indexOfLastPost);
 
   return (
-    <div>
-      {currentNotes}
-      <Pagination size="sm">{items}</Pagination>
-
-    </div>
+    <Container style={{ textAlign: "center" }}>
+      <ul className="card-list" >
+        {currentNotes}
+      </ul>
+      <Pagination className="text-center" size="sm">{items}</Pagination>
+    </Container>
   );
 };
 

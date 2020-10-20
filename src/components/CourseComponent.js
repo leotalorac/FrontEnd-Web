@@ -5,6 +5,9 @@ import { STUDYROOMS } from "../shared/studyrooms";
 import ForumList from "../components/forumList";
 import Pagination from "react-bootstrap/Pagination";
 import Notes from "../components/notesList/notes.component" 
+import {getNotesByClass} from "../helpers"
+import TopNav from "../components/topNav/topNav.component"
+import SideBar from "../components/side-bar/SideBar"
 
 class Course extends Component {
   constructor(props) {
@@ -20,72 +23,48 @@ class Course extends Component {
   }
 
   componentDidMount(){
-      this.setState({notes:[
-          {
-            id:1,
-            name:"Octubre 12"
-          },
-          {
-            id:2,
-            name:"Octubre 13"
-          },
-          {
-            id:3,
-            name:"Octubre 14"
-          },
-          {
-            id:4,
-            name:"Octubre 15"
-          },
-          {
-            id:5,
-            name:"Octubre 16"
-          },
-          {
-            id:6,
-            name:"Octubre 17"
-          },
-          {
-            id:7,
-            name:"Octubre 18"
-          },
-          {
-            id:8,
-            name:"Octubre 19"
-          },
-      ]})
+    getNotesByClass(1).then((res) => {
+      const notesData = res.data.data.getNotesByClass.map((item) => ({
+        value: item,
+      }));
+      const notesList = [];
+      for (let index = 0; index < notesData.length; index++) {
+        notesList.push(notesData[index])
+      }
+      console.log(notesList)
+      this.setState({notes:notesList})
+    }).catch()
   }
 
 
 
   render() {
-    let items = [];
-    for (let number = 1; number <= Math.ceil(this.state.notes.length / this.state.notesPerPage); number++) {
-      items.push(
-        <Pagination.Item key={number} onClick={() => this.handlePagination(number)} active={number === this.state.currentPage}>
-          {number}
-        </Pagination.Item>
-      );
-    }
-
-    const notes = this.state.notes.map(row => {
-        return(
-            <p>{row.name}</p>
-        );
-    });
-
-    const indexOfLastPost = this.state.currentPage * this.state.notesPerPage;
-    const indexOfFirstPost = indexOfLastPost - this.state.notesPerPage;
-    const currentNotes = notes.slice(indexOfFirstPost, indexOfLastPost);
-
+    const data = [
+      {
+        id: 1,
+        text: "My Courses",
+        icon: "courses",
+      },
+      {
+        id: 2,
+        text: "Resources",
+        icon: "courses",
+      },
+      {
+        id: 3,
+        text: "Go Back",
+        icon: "back",
+      },
+    ];
     return (
-      <div className="col">
+      <div>
+    <SideBar data={data} handler={this.handlerSelect} />
+      <div className="content">
+        <TopNav handlerSearch={this.handlerSearch} text="Crear Nota" handlerClick={this.handlerClick} />
         <div className="row">
-          <div>
             <Notes notes={this.state.notes}  />
-          </div>
         </div>
-        <div className="row">
+        <div className="row mt-4 mb-4">
           <div className="col">
             <ForumList course_id={this.state.course_id} />
           </div>
@@ -94,6 +73,8 @@ class Course extends Component {
           </div>
         </div>
       </div>
+      </div>
+
     );
   }
 }
