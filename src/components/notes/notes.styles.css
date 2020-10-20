@@ -1,0 +1,12 @@
+.timeline {
+    width: 100%;
+    display: block;
+    list-style-type: none;
+    padding-bottom: 2em;
+    padding-left: 0px;
+    margin-bottom: 2em; 
+  }
+    .timeline li {
+      padding: 1em 0; 
+    }
+  
