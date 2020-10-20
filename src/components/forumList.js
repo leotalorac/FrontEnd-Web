@@ -8,12 +8,12 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import { Link } from "react-router-dom";
-import { getForums, createForum } from '../helpers'
+import { getForumsByCourse, createForum } from '../helpers'
 import 'bootstrap/dist/css/bootstrap.css';
 
 
 
-const ForumList = () => {
+const ForumList = (course_id) => {
 
   const [modalShow, setModalShow] = React.useState(false);
   const [showSuccessModal, setShowSuccessModal] = React.useState(false);
@@ -43,7 +43,7 @@ const ForumList = () => {
 
     function submitHandler(event) {
       event.preventDefault();
-      createForum(newForumCreator, newForumName).then((res) => {
+      createForum(newForumCreator,"0",course_id.course_id, newForumName).then((res) => {
         setModalShow(false)
         setShowSuccessModal(true)
       })
@@ -93,14 +93,18 @@ const ForumList = () => {
   const [forums, setForums] = React.useState([{
     value: {
       name: String,
-      _id: String
+      _id: String,
+      course_id: String,
     }
   }])
 
 
   useEffect(() => {
-    getForums().then((res) => {
-      const forumsData = res.data.map((item) => ({
+    getForumsByCourse(course_id.course_id).then((res) => {
+      console.log(res.data.data)
+      console.log(course_id.course_id)
+      const forumsData = res.data.data.getForumsByCourse.map((item) => ({
+        //const forumsData = res.data.map((item) => ({
         value: item,
       }));
       const forumList = [];
