@@ -6,8 +6,8 @@ import Login from './views/login'
 import Register from './views/register'
 import Courses from './views/courses'
 import Class from "./views/class/class.component"
-
 import Course from './components/CourseComponent';
+
 function App() {
   return (  
     <Router>
