@@ -11,7 +11,13 @@
     vertical-align: middle;
     margin-left: 25%;
 }
-
+#ColItemSingleSR{
+    display: flex;
+    align-items: center;
+}
+#IconItemSingleSR{
+    color: #5E90F2;
+}
 #StudyroomsContainer{
     display: table;
     width: 100%;
@@ -39,11 +45,17 @@
 }
 #TitleAlert{
     color: cornsilk;
-    font-size: 0.9rem;
+    font-size: 1rem;
+    margin-left: 5%;
+    margin-top: 1%;
 }
 #ContainerAlert {
     padding-left: 0 !important;
     padding-right: 0 !important;
-    width: 80% !important;
+    width: 85% !important;
+    display: flow-root;
   }
+#iconAddSR{
+    vertical-align: baseline;
+}
 

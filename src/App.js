@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Forum from './views/forum/forum'
 import Login from './views/login'
 import Register from './views/register'
-import forumList from './components/forumList'
 import Class from "./views/class/class.component"
 
 import Course from './components/CourseComponent';
