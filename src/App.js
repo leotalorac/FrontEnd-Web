@@ -11,55 +11,20 @@ import SideBar from "./components/side-bar/SideBar"
 import { render } from '@testing-library/react';
 import {withRouter, Switch} from 'react-router-dom'
 
-class App extends React.Component {
+function App () {
   
-  constructor(props) {
-    super(props);
-   this.state = {
-     l:""
-   }
-}
-
-  handlerClick = (key) => {
-	  if(key == 2){
-      this.props.history.push("/home/class");
-      this.setState({l:"a"});
-    }
-  };
-  render(){
-    const data = [
-      {
-        id: 1,
-        text: "My Courses",
-        icon: "courses",
-      },
-      {
-        id: 2,
-        text: "Resources",
-        icon: "courses",
-      },
-      
-      {
-        id: 3,
-        text: "Go Back",
-        icon: "back",
-      },
-    ];
-
     return (  
       <Router>
         <Route exact path="/login" component={Login}></Route>
-        {/* <Route path="/home" component={() => <SideBar data={data} handler={this.handlerClick} /> }></Route> */}
-        <Route exact path="/home/register" component={Register}></Route>
-        <Route exact path="/home/course/:course_id" component={Course}></Route>
-        <Route exact path="/home/class" component={Class}></Route>
-        <Route exact path="/home/forum/posts/:id" component={Forum}></Route>
-        <Route  path="/home/courses" component={Courses}></Route>
+        <Route exact path="/register" component={Register}></Route>
+        <Route exact path="/course/:course_id" component={Course}></Route>
+        <Route exact path="/class" component={Class}></Route>
+        <Route exact path="/me/forum/posts/:id" component={Forum}></Route>
+        <Route  path="/courses" component={Courses}></Route>
         <Route path="*" component={() => "404 NOT FOUND"} />
       </Router>
   
     );
-  }
   
 }
 

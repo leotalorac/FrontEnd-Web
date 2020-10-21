@@ -25,8 +25,20 @@ class Course extends Component {
     };
   }
 
+  handlerSidebar = (key) => {
+    if(key == "2"){
+      this.props.history.push("/courses");
+    }
+    if(key == "1"){
+      this.props.history.push("/courses");
+    }
+    if(key == "2"){
+      this.props.history.push("/class");
+    }
+  }
+
   componentDidMount() {
-    getNotesByClass(1)
+    getNotesByClass(this.state.course_id)
       .then((res) => {
         this.setState({ notes: res.data.data.getNotesByClass }, () =>
           console.log(this.state.notes)
@@ -76,6 +88,8 @@ class Course extends Component {
       },
     ];
     return (
+      <>
+      <SideBar data={data} handler={this.handlerSidebar} />
       <div className="content">
         <TopNav
           handlerSearch={this.handlerSearch}
@@ -130,6 +144,7 @@ class Course extends Component {
           </Modal.Footer>
         </Modal>
       </div>
+      </>
     );
   }
 }
