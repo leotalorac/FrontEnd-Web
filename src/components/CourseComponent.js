@@ -4,10 +4,11 @@ import StudyRoom from "./StudyRoomComponent/StudyroomComponent";
 import { STUDYROOMS } from "../shared/studyrooms";
 import ForumList from "../components/forumList";
 import Pagination from "react-bootstrap/Pagination";
-import Notes from "../components/notesList/notes.component" 
-import {getNotesByClass} from "../helpers"
-import TopNav from "../components/topNav/topNav.component"
-import SideBar from "../components/side-bar/SideBar"
+import { Modal, Button, Form } from "react-bootstrap";
+import Notes from "../components/notesList/notes.component";
+import { getNotesByClass, createNote } from "../helpers";
+import TopNav from "../components/topNav/topNav.component";
+import SideBar from "../components/side-bar/SideBar";
 
 class Course extends Component {
   constructor(props) {
@@ -16,27 +17,45 @@ class Course extends Component {
     this.state = {
       studyrooms: STUDYROOMS,
       course_id: this.props.match.params.course_id,
-      notes:[],
-      notesPerPage:2,
-      currentPage:1,
+      notes: [],
+      notesPerPage: 2,
+      currentPage: 1,
+      showModalNote: false,
+      noteContent:""
     };
   }
 
-  componentDidMount(){
-    getNotesByClass(1).then((res) => {
-      const notesData = res.data.data.getNotesByClass.map((item) => ({
-        value: item,
-      }));
-      const notesList = [];
-      for (let index = 0; index < notesData.length; index++) {
-        notesList.push(notesData[index])
-      }
-      console.log(notesList)
-      this.setState({notes:notesList})
-    }).catch()
+  componentDidMount() {
+    getNotesByClass(1)
+      .then((res) => {
+        this.setState({ notes: res.data.data.getNotesByClass }, () =>
+          console.log(this.state.notes)
+        );
+      })
+      .catch();
   }
 
+  handlerClick = () => {
+    const note = this.state.noteContent;
+    if(note.length <= 20 && note.length > 0){
+      createNote(note, this.state.course_id) 
+      .then((res) => {
+        const aux = {
+          id_note: 31,
+          content: note,
+          id_user: 2,
+          score: 0,
+          id_course: 1,
+        };
+        this.setState({ notes: [...this.state.notes, aux] });
+        this.setState({ showModalNote: false })
+      })
+      .catch();
+    } else {
 
+    }
+
+  };
 
   render() {
     const data = [
@@ -57,26 +76,62 @@ class Course extends Component {
       },
     ];
     return (
-      <div>
-    <SideBar data={data} handler={this.handlerSelect} />
       <div className="content">
-        <TopNav handlerSearch={this.handlerSearch} text="Crear Nota" handlerClick={this.handlerClick} />
+        <TopNav
+          handlerSearch={this.handlerSearch}
+          text="New Note"
+          handlerClick={() => this.setState({ showModalNote: true })}
+        />
+         <h1 className="title">
+            Software Architecture 
+          </h1>
         <div className="row">
-            <Notes notes={this.state.notes}  />
+          <Notes notes={this.state.notes} />
         </div>
-        <div className="row mt-4 mb-4">
-          <div className="col">
+        <div className="row  mb-4">
+          <div className="col mt-4">
             <ForumList course_id={this.state.course_id} />
           </div>
-          <div className="col">
+          <div className="col mt-4">
             <StudyRoom studyrooms={this.state.studyrooms} />
           </div>
         </div>
-      </div>
-      </div>
 
+        <Modal
+          show={this.state.showModalNote}
+          onHide={() => {
+            this.setState({ showModalNote: false });
+          }}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Create New Note</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form.Group controlId="exampleForm.ControlTextarea1">
+              <Form.Label>Insert text</Form.Label>
+              <Form.Control as="textarea" rows="3" onChange={(e) => this.setState({noteContent:e.target.value})} />
+            </Form.Group>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button
+              variant="secondary"
+              onClick={() => {
+                this.setState({ showModalNote: false });
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="primary"
+              onClick={this.handlerClick}
+            >
+              Create
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </div>
     );
   }
 }
 
-export default Course;
+export default withRouter(Course);

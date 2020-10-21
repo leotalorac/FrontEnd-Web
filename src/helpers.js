@@ -289,4 +289,36 @@ export const createAnswer = (id, idPost, idComment, content, userCreator, userCr
     return promise;
   };
 
+
+
+  export const createNote = (content,id_course,id_user) => {
+    let promise = new Promise((resolve, reject) => {
+        axios
+          .post(GraphQL_URL,
+            {
+              query:`
+              mutation{
+                createNote(note:{content:"${content}",id_user:2,score:0,id_course:${id_course}}){
+                  ok
+                }
+              } 
+              `
+            },
+              {
+                headers: {
+                  'Content-Type': 'application/json'
+                }
+              }
+            )
+          .then((res) => {
+            resolve(res);
+          })
+          .catch((error) => {
+            console.log(error);
+            reject(new Error(error));
+          });
+      });
+    return promise;
+  };
+
  

@@ -19,28 +19,47 @@ const Notes = (props) => {
 
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
-
-  const notes = props.notes.map((row,i) => {
+ 
+  const notes =  [...props.notes].reverse().map((row,i) => {
     return (
       <li className="card-element" >
     <a href="#">
-    <h2 className="card-title" >Title {<i></i>}</h2>
-      <p className="card-content">{row.value.content}</p>
+    <h2 className="card-title" >Note {i+1}</h2>
+      <p className="card-content">{row.content}</p>
     </a>
   </li>
     );
   });
 
-  const currentNotes = notes.slice(indexOfFirstPost, indexOfLastPost);
+  let currentNotes = notes.slice(indexOfFirstPost, indexOfLastPost);
+
 
   return (
     <Container style={{ textAlign: "center" }}>
       <ul className="card-list" >
         {currentNotes}
       </ul>
-      <Pagination className="text-center" size="sm">{items}</Pagination>
+      <Pagination  size="sm">
+      <Pagination.First onClick={() => setCurrentPage(1)} />
+        {items}
+        <Pagination.Last onClick={() => setCurrentPage(Math.ceil(props.notes.length / postsPerPage))} />
+      </Pagination>
     </Container>
   );
 };
+
+function temporarySwap(array)
+{
+    var left = null;
+    var right = null;
+    var length = array.length;
+    for (left = 0, right = length - 1; left < right; left += 1, right -= 1)
+    {
+        var temporary = array[left];
+        array[left] = array[right];
+        array[right] = temporary;
+    }
+    return array;
+}
 
 export default Notes;

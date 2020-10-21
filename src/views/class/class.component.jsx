@@ -82,28 +82,15 @@ class Class extends React.Component {
 }
 
   render() {
-    const data = [
-      {
-        id: 1,
-        text: "My Courses",
-        icon: "courses",
-      },
-      {
-        id: 2,
-        text: "Go Back",
-        icon: "back",
-      },
-    ];
+    
     
 
     return (
       <div>
-        <SideBar data={data} handler={this.handlerSelect} />
 
         <div className="content">
 
 		 <TopNav handlerSearch={this.handlerSearch} text="Crear Recurso" handlerClick={this.handlerClick} />
-		{/* <ModalResource show={this.state.showModal} handleShow={this.handleShowModal} handleClose={this.handleCloseModal} /> */}
           <h1 className="title">
             Software Architecture {">"}
             {">"} October 12{" "}

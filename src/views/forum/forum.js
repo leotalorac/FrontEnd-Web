@@ -184,7 +184,7 @@ const Forum = () => {
     //console.log(forum)
 
     return (
-        <Container style={{ margin: '5%' }}>
+        <div className="content" style={{ margin: '5%' }}>
             
             <Row>
                 <Col>
@@ -254,7 +254,7 @@ const Forum = () => {
                 show={showSuccessModal}
                 onHide={() => setShowSuccessModal(false)}
             />
-        </Container>
+        </div>
     )
 }
 export default Forum;
