@@ -21,7 +21,7 @@ function App() {
 
   return (
     <Router>
-       <Route exact path="/register" component={Register}></Route>
+      <Route exact path="/register" component={Register}></Route>
       <AuthCheck fallback={<Login />}>
         <Route
           exact

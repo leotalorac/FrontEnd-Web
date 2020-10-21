@@ -53,7 +53,7 @@ class Course extends Component {
       })
       .catch();
       
-      getStudyRooms()
+      getStudyRooms(this.state.course_id)
         .then((res) => {
             this.setState({
                 studyrooms: res.data.data.get_study_rooms
@@ -126,7 +126,7 @@ class Course extends Component {
             <ForumList course_id={this.state.course_id} />
           </div>
           <div className="col mt-4">
-           {this.state.studyrooms != null ? <StudyRoom studyrooms={this.state.studyrooms} /> : "" } 
+            <StudyRoom studyrooms={this.state.studyrooms} id={this.state.course_id}/>
           </div>
         </div>
 
