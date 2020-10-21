@@ -107,6 +107,37 @@ export const createForum = (userCreator, userCreator_id, course_id, name) => {
     return promise;
   };
 
+  //CreateCourse
+export const createCourse = (id, name, forum) => {
+  let promise = new Promise((resolve, reject) => {
+      axios
+        .post(GraphQL_URL,
+          {
+            query:`
+            mutation{
+              createCourse(course:{id:${id}, name:"${name}", forum:"${forum}"}){
+                ok
+              }
+            }
+            `
+          },
+            {
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            }
+          )
+        .then((res) => {
+          resolve(res);
+        })
+        .catch((error) => {
+          console.log(error);
+          reject(new Error(error));
+        });
+    });
+  return promise;
+};
+
 //GetPosts
 export const getPosts = async (id) => {
     let promise = new Promise((resolve, reject) => {

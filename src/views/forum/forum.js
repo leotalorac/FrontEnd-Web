@@ -26,25 +26,25 @@ const Forum = (props) => {
     const [commentsShow, toggleCommentsShow] = useState(false);
     const [answersShow, toggleAnswersShow] = useState(false);
     const [showSuccessModal, setShowSuccessModal] = React.useState(false);
-    const handleSuccessModalClose = () => { setShowSuccessModal(false); window.location.reload(false) }
 
     const [newCommentContent, setCommentContent] = React.useState("")
     //const [newCommentCreator, setCommentCreator] = React.useState("")
-    const newCommentCreator = "Marcelo Cifuentes"
+    const newCommentCreator = user.displayName
     const [newCommentPostID, setCommentpostID] = React.useState("")
 
     const [newAnswerContent, setAnswerContent] = React.useState("")
     //const [newAnswerCreator, setAnswerCreator] = React.useState("")
-    const newAnswerCreator = "Juan Camilo Gómez"
+    const newAnswerCreator = user.displayName
     const [newAnswerPostID, setAnswerPostID] = React.useState("")
     const [newAnswerCommentID, setAnswerCommentID] = React.useState("")
 
     function submitCommentHandler(event) {
         event.preventDefault();
-        createComment(id, newCommentPostID, newCommentContent, newCommentCreator, "0").then((res) => {
+        createComment(id, newCommentPostID, newCommentContent, newCommentCreator, user.uid).then((res) => {
             console.log(res)
             setModalShow(false)
-            setShowSuccessModal(true)
+            setShowSuccessModal(!showSuccessModal)
+            window.location.reload(false)
         })
     }
 
@@ -59,7 +59,8 @@ const Forum = (props) => {
         createAnswer(id, newAnswerPostID, newAnswerCommentID, newAnswerContent, newAnswerCreator, "0").then((res) => {
             console.log(res)
             setModalShow(false)
-            setShowSuccessModal(true)
+            setShowSuccessModal(!showSuccessModal)
+            window.location.reload(false)
         })
     }
 
@@ -70,22 +71,6 @@ const Forum = (props) => {
         setAnswerCommentID(event.target.name.substr(25, 50))
     }
 
-    function SuccessModal() {
-        return (
-            <>
-                <Modal show={showSuccessModal} onHide={handleSuccessModalClose}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Información suministrada exitosamente</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Footer>
-                        <Button variant="success" onClick={handleSuccessModalClose}>
-                            Ok
-                </Button>
-                    </Modal.Footer>
-                </Modal>
-            </>
-        );
-    }
 
 
     function NewPostModal(props) {
@@ -96,10 +81,10 @@ const Forum = (props) => {
 
         function submitPostHandler(event) {
             event.preventDefault();
-            createPost(id,newPostTitle, newPostContent, newPostCreator, "0").then((res) => {
+            createPost(id,newPostTitle, newPostContent, user.displayName, "0").then((res) => {
                 console.log(res)
                 setModalShow(false)
-                setShowSuccessModal(true)
+                setShowSuccessModal(!showSuccessModal)
             })
         }
 
@@ -113,10 +98,6 @@ const Forum = (props) => {
             setNewPostContent(event.target.value)
         }
 
-        function changePostCreatorHandler(event) {
-            event.preventDefault();
-            setNewPostCreator(event.target.value)
-        }
 
         return (
             <Modal
@@ -132,9 +113,6 @@ const Forum = (props) => {
                 </Modal.Header>
                 <Modal.Body>
                     <Form onSubmit={submitPostHandler} style={{ margin: "3%" }}>
-                        <Form.Group controlId="postTitle">
-                            <Form.Control as="textarea" rows="1" placeholder="Usuario creador" onChange={changePostCreatorHandler} />
-                        </Form.Group>
                         <Form.Group controlId="postTitle">
                             <Form.Control as="textarea" rows="1" placeholder="Título" onChange={changePostTitleHandler} />
                         </Form.Group>
@@ -183,9 +161,9 @@ const Forum = (props) => {
             setForum(forumData)
         }).catch()
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [showSuccessModal])
 
-    //console.log(forum)
+    //console.log(user.uid)
 
     const handlerSidebar = (key) => {
         if(key == "1"){
@@ -287,10 +265,6 @@ const Forum = (props) => {
 
                 )}
             </ListGroup>
-            <SuccessModal
-                show={showSuccessModal}
-                onHide={() => setShowSuccessModal(false)}
-            />
         </div>
         </ div>
     )
