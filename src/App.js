@@ -7,8 +7,12 @@ import Register from './views/register'
 import Courses from './views/courses'
 import Class from "./views/class/class.component"
 import Course from './components/CourseComponent';
+import {
+  useFirebaseApp
+}from 'reactfire'
 
 function App() {
+  const firebase = useFirebaseApp();
   return (  
     <Router>
       <Route exact path="/" render={() => {
