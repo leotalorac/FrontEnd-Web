@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Modal, Col, Button } from "react-bootstrap";
 const ModalResource =(props) => {
     
+    
     return (
       <>
         <Button variant="primary" onClick={props.handleShow}>

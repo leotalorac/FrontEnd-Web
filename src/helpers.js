@@ -289,7 +289,36 @@ export const createAnswer = (id, idPost, idComment, content, userCreator, userCr
     return promise;
   };
 
-
+  export const RegisterUser = (email, displayName, password) => {
+    
+    let promise = new Promise((resolve, reject) => {
+          axios
+          .post(GraphQL_URL,
+            {
+              query:`
+              mutation{
+                createUser(user:{email: "${email}", displayName: "${displayName}", password:"${password}"}){
+                  displayName 
+                }
+              }
+              `
+            },
+              {
+                headers: {
+                  'Content-Type': 'application/json'
+                }
+              }
+            )
+          .then((res) => {
+            resolve(res);
+          })
+          .catch((error) => {
+            console.log(error);
+            reject(new Error(error));
+          });
+      });
+    return promise;
+  }
 
   export const createNote = (content,id_course,id_user) => {
     let promise = new Promise((resolve, reject) => {
@@ -321,4 +350,3 @@ export const createAnswer = (id, idPost, idComment, content, userCreator, userCr
     return promise;
   };
 
- 

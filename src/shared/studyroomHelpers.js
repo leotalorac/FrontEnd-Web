@@ -39,13 +39,13 @@ export const postStudyRoom = () => {
   return promise;
 };
 
-export const getStudyRooms = () => {
+export const getStudyRooms = async (id) => {
   let promise = new Promise((resolve, reject) => {
     axios
     .post(GraphQL_URL, {
       query:`
       query{
-        get_study_rooms{
+        get_study_rooms(courseId:"${id}"){
           _id
           name
           resources{
