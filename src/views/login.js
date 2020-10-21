@@ -20,7 +20,6 @@ export default (props) =>{
 
     const login = async()=>{
         await firebase.auth().signInWithEmailAndPassword(email,password).then(function(result) {
-            history.push(`courses`)
           }).catch(function(error) {
             alert("no login")
           });

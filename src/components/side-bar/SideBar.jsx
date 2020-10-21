@@ -7,7 +7,7 @@ import {Col, Image, Row} from "react-bootstrap";
 import Logo from "../../assets/images/logo_n.png";
 import {faUserCircle} from "@fortawesome/free-solid-svg-icons";
 import "./SideBar.styles.css"
-
+import {useUser} from 'reactfire'
 
 // const navWidthCollapsed = 64;
 const navWidthExpanded = 250;
@@ -44,6 +44,32 @@ const Separator = styled.div`
     height: 1px;
 `;
 
+const MyDiv = ({expanded}) => {
+
+    var user = useUser();
+       return(
+       <NavHeader expanded={expanded} style={{backgroundColor: "#fff"}}>
+       <NavTitle>
+           <i><Image className={"ml-2 mb-1"} src={Logo} style={{height: "60px"}} fluid/></i>
+           <p style={{display: "inline", fontSize: "25px", marginLeft: "35px", color: "#5E90F2 "}}
+              className={"mt-2"}>WeStudy </p>
+       </NavTitle>
+       <NavInfoPane style={{backgroundColor: "#5E90F2", backgroundPosition: "center", minHeight: "50px"}}>
+           <Row>
+               <Col xs={3}>
+                   <FontAwesomeIcon icon={faUserCircle}
+                                    style={{fontSize: "3em", marginTop: "15px", color: "#fff"}}/>
+               </Col>
+               <Col >
+                   <p className={"mt-3"} style={{fontWeight: "bold", color: "#fff"}}>  {user.displayName != null ? user.displayName:"" } </p>
+                   <p style={{marginTop: "-15px", color: "#fff"}}> {user.email != null ? user.email:"" } </p>
+               </Col>
+           </Row>
+           <hr/>
+       </NavInfoPane>
+   </NavHeader>
+       );
+ }
 
 class SideBar extends React.Component {
     constructor(props) {
@@ -81,26 +107,7 @@ class SideBar extends React.Component {
 
             >
                 <Toggle style={{backgroundColor: expanded ? "#A30021" : "#A30021", height: "57px", display: "none"}}/>
-                <NavHeader expanded={expanded} style={{backgroundColor: "#fff"}}>
-                    <NavTitle>
-                        <i><Image className={"ml-2 mb-1"} src={Logo} style={{height: "60px"}} fluid/></i>
-                        <p style={{display: "inline", fontSize: "25px", marginLeft: "35px", color: "#5E90F2 "}}
-                           className={"mt-2"}>WeStudy </p>
-                    </NavTitle>
-                    <NavInfoPane style={{backgroundColor: "#5E90F2", backgroundPosition: "center", minHeight: "50px"}}>
-                        <Row>
-                            <Col xs={3}>
-                                <FontAwesomeIcon icon={faUserCircle}
-                                                 style={{fontSize: "3em", marginTop: "15px", color: "#fff"}}/>
-                            </Col>
-                            <Col >
-                                <p className={"mt-3"} style={{fontWeight: "bold", color: "#fff"}}> Bryan Daniel Gomez</p>
-                                <p style={{marginTop: "-15px", color: "#fff"}}> jcgomezlo@unal.edu.co </p>
-                            </Col>
-                        </Row>
-                        <hr/>
-                    </NavInfoPane>
-                </NavHeader>
+                <MyDiv expanded={true} />
                 <Nav defaultSelected="home" style={{backgroundColor: "#5E90F2"}}>
                     {navItems}
                 </Nav>

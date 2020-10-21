@@ -35,6 +35,11 @@ class Course extends Component {
     if(key == "3"){
       this.props.history.push("/courses");
     }
+    if(key == "4"){
+      this.props.logout();
+      
+      this.props.history.push("/");
+    }
   }
 
   componentDidMount() {
@@ -84,6 +89,11 @@ class Course extends Component {
       {
         id: 3,
         text: "Go Back",
+        icon: "back",
+      },
+      {
+        id: 4,
+        text: "Cerrar Sesión",
         icon: "back",
       },
     ];

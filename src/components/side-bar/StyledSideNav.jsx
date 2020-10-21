@@ -7,6 +7,7 @@ import SideNav, {
     NavText
 } from '@trendmicro/react-sidenav';
 
+
 // SideNav
 const StyledSideNav = styled(SideNav)`
     background-color: #fff;
