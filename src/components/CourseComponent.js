@@ -27,13 +27,13 @@ class Course extends Component {
 
   handlerSidebar = (key) => {
     if(key == "1"){
-      this.props.history.push("/courses");
+      this.props.history.push("/");
     }
     if(key == "2"){
       this.props.history.push("/class");
     }
     if(key == "3"){
-      this.props.history.push("/courses");
+      this.props.history.push("/");
     }
     if(key == "4"){
       this.props.logout();
