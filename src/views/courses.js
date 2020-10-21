@@ -6,10 +6,12 @@ import { getAllCourses } from '../helpers'
 import { Link } from "react-router-dom";
 import SideBar from "../components/side-bar/SideBar";
 import 'bootstrap/dist/css/bootstrap.css';
+import { withRouter } from "react-router";
 
 
 
-const Login = () => {
+
+const Courses = (props) => {
 
     const [courses, setCourses] = React.useState([{
         value:
@@ -33,6 +35,15 @@ const Login = () => {
         }).catch()
     }, [])
 
+    const handlerSidebar = (key) => {
+        if(key == "1"){
+        }
+        if(key == "2"){
+            props.logout();
+        }
+       
+      }
+
     const data = [
         {
             id: 1,
@@ -41,9 +52,9 @@ const Login = () => {
         },
         {
             id: 2,
-            text: "Go Back",
+            text: "Cerrar Sesión",
             icon: "back",
-        },
+          },
     ];
 
 
@@ -51,7 +62,8 @@ const Login = () => {
     return (
         <div>
             
-            <Container style={{ marginLeft: "25%"}}>
+            <div className="content" >
+                <SideBar data={data} handler={handlerSidebar} />
                 <Row>
                     {courses.map((course, index) =>
 
@@ -68,8 +80,8 @@ const Login = () => {
 
                     )}
                 </Row>
-            </Container>
+            </div>
         </div>
     )
 }
-export default Login;
+export default withRouter(Courses);

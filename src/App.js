@@ -30,7 +30,7 @@ function App() {
         ></Route>
         <Route exact path="/class" component={Class}></Route>
         <Route exact path="/forum/posts/:id" component={Forum}></Route>
-        <Route exact path="/" component={Courses}></Route>
+        <Route exact path="/" component={() => <Courses logout={logout} />}></Route>
       </AuthCheck>
     </Router>
   );
