@@ -2,7 +2,11 @@ import React, { useEffect } from 'react';
 import Container from 'react-bootstrap/Container'
 import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row'
-import { getAllCourses } from '../helpers'
+import Modal from 'react-bootstrap/Modal'
+import Form from 'react-bootstrap/Form'
+import Col from 'react-bootstrap/Col'
+import Button from 'react-bootstrap/Button'
+import { getAllCourses, createCourse } from '../helpers'
 import { Link } from "react-router-dom";
 import SideBar from "../components/side-bar/SideBar";
 import 'bootstrap/dist/css/bootstrap.css';
@@ -13,6 +17,56 @@ import { withRouter } from "react-router";
 
 const Courses = (props) => {
 
+    const [show, setShow] = React.useState(false);
+
+
+
+    function NewCourseModal(props) {
+
+        const [newCourseName, setNewCourseName] = React.useState("")
+
+        function submitHandler(event) {
+            event.preventDefault();
+            createCourse(1, newCourseName, "0").then((res) => {
+                setModalShow(false)
+                setShow(true)
+            })
+        }
+
+        function changeNameHandler(event) {
+            event.preventDefault();
+            setNewCourseName(event.target.value)
+        }
+
+
+        return (
+            <Modal
+                {...props}
+                size="lg"
+                aria-labelledby="contained-modal-title-vcenter"
+                centered
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title id="contained-modal-title-vcenter">
+                        Nuevo curso
+              </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+
+                    <Form onSubmit={submitHandler} style={{ margin: "3%" }}>
+                        <Form.Group controlId="postTitle">
+                            <Form.Control as="textarea" rows="1" placeholder="Título del foro" onChange={changeNameHandler} />
+                        </Form.Group>
+                        <Button type="submit" style={{ backgroundColor: "#5E90F2", marginTop: "1%" }} >Crear curso</Button>
+                    </Form>
+
+                </Modal.Body>
+            </Modal>
+        );
+    }
+
+
+    const [modalShow, setModalShow] = React.useState(false);
     const [courses, setCourses] = React.useState([{
         value:
         {
@@ -33,16 +87,16 @@ const Courses = (props) => {
             }
             setCourses(coursesList)
         }).catch()
-    }, [])
+    }, [show])
 
     const handlerSidebar = (key) => {
-        if(key == "1"){
+        if (key == "1") {
         }
-        if(key == "2"){
+        if (key == "2") {
             props.logout();
         }
-       
-      }
+
+    }
 
     const data = [
         {
@@ -54,29 +108,41 @@ const Courses = (props) => {
             id: 2,
             text: "Cerrar Sesión",
             icon: "back",
-          },
+        },
     ];
+
 
 
     console.log(courses)
     return (
         <div>
-            
+
             <div className="content" >
                 <SideBar data={data} handler={handlerSidebar} />
                 <Row>
+                    <Col>
+                        <h1 style={{ marginLeft: "1%", fontWeight: "bold", color: "#5E90F2" }}>Cursos</h1>
+                    </Col>
+                    <Col>
+                        <Button style={{ backgroundColor: "#5E90F2", marginLeft: "50%" }} onClick={() => setModalShow(true)} >
+                            Nuevo curso
+                </Button>
+                        <NewCourseModal
+                            show={modalShow}
+                            onHide={() => setModalShow(false)}
+                        />
+                    </Col>
+                </Row>
+                <Row>
                     {courses.map((course, index) =>
+                        <Link style={{ margin: '1%' }} to={"/course/" + course.value.id_course}>
+                            <Card key={index} style={{ width: '18rem', margin: '1%', backgroundColor: "white" }}>
+                                <Card.Body>
+                                    <Card.Title style={{ color: "#5E90F2", fontWeight: "bold" }}>{course.value.name}</Card.Title>
+                                </Card.Body>
+                            </Card>
+                        </Link>
 
-                        <Card key={index} style={{ width: '18rem', margin: '1%' }}>
-                            <Card.Body>
-                                <Card.Title>{course.value.name}</Card.Title>
-                                <Card.Subtitle className="mb-2 text-muted">Course subtitle</Card.Subtitle>
-                                <Card.Text>
-                                    Course description
-                    </Card.Text>
-                                <Link to={"/course/" + course.value.id_course}>Acceder al curso</Link>
-                            </Card.Body>
-                        </Card>
 
                     )}
                 </Row>
