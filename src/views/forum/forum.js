@@ -11,12 +11,14 @@ import { useParams, Link } from "react-router-dom";
 import { getPosts, createPost, createComment, createAnswer } from '../../helpers'
 import 'bootstrap/dist/css/bootstrap.css';
 import ForumList from '../../components/forumList'
+import {useUser} from 'reactfire'
 
 
 
 
 const Forum = () => {
 
+    const user = useUser();
     const id = useParams().id; //forum id
     const [modalShow, setModalShow] = React.useState(false);
     const [commentsShow, toggleCommentsShow] = useState(false);
@@ -186,6 +188,7 @@ const Forum = () => {
     return (
         <div className="content" style={{ margin: '5%' }}>
             
+            <h1>Hola {user.displayName}</h1>
             <Row>
                 <Col>
                     <h1 style={{ fontWeight: "bold", color: "#5E90F2" }}>{forum.name}</h1>
