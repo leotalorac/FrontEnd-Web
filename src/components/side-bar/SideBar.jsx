@@ -8,6 +8,7 @@ import Logo from "../../assets/images/logo_n.png";
 import {faUserCircle} from "@fortawesome/free-solid-svg-icons";
 import "./SideBar.styles.css"
 import {useUser} from 'reactfire'
+import { isFuture } from "date-fns";
 
 // const navWidthCollapsed = 64;
 const navWidthExpanded = 250;
@@ -47,28 +48,35 @@ const Separator = styled.div`
 const MyDiv = ({expanded}) => {
 
     var user = useUser();
-       return(
-       <NavHeader expanded={expanded} style={{backgroundColor: "#fff"}}>
-       <NavTitle>
-           <i><Image className={"ml-2 mb-1"} src={Logo} style={{height: "60px"}} fluid/></i>
-           <p style={{display: "inline", fontSize: "25px", marginLeft: "35px", color: "#5E90F2 "}}
-              className={"mt-2"}>WeStudy </p>
-       </NavTitle>
-       <NavInfoPane style={{backgroundColor: "#5E90F2", backgroundPosition: "center", minHeight: "50px"}}>
-           <Row>
-               <Col xs={3}>
-                   <FontAwesomeIcon icon={faUserCircle}
-                                    style={{fontSize: "3em", marginTop: "15px", color: "#fff"}}/>
-               </Col>
-               <Col >
-                   <p className={"mt-3"} style={{fontWeight: "bold", color: "#fff"}}>  {user.displayName != null ? user.displayName:"" } </p>
-                   <p style={{marginTop: "-15px", color: "#fff"}}> {user.email != null ? user.email:"" } </p>
-               </Col>
-           </Row>
-           <hr/>
-       </NavInfoPane>
-   </NavHeader>
-       );
+    if(user != null){
+        return(
+            <NavHeader expanded={expanded} style={{backgroundColor: "#fff"}}>
+            <NavTitle>
+                <i><Image className={"ml-2 mb-1"} src={Logo} style={{height: "60px"}} fluid/></i>
+                <p style={{display: "inline", fontSize: "25px", marginLeft: "35px", color: "#5E90F2 "}}
+                   className={"mt-2"}>WeStudy </p>
+            </NavTitle>
+            <NavInfoPane style={{backgroundColor: "#5E90F2", backgroundPosition: "center", minHeight: "50px"}}>
+                <Row>
+                    <Col xs={3}>
+                        <FontAwesomeIcon icon={faUserCircle}
+                                         style={{fontSize: "3em", marginTop: "15px", color: "#fff"}}/>
+                    </Col>
+                    <Col >
+                        <p className={"mt-3"} style={{fontWeight: "bold", color: "#fff"}}>  {user.displayName != null ? user.displayName:"" } </p>
+                        <p style={{marginTop: "-15px", color: "#fff"}}> {user.email != null ? user.email:"" } </p>
+                    </Col>
+                </Row>
+                <hr/>
+            </NavInfoPane>  
+        </NavHeader>
+            );
+    } else {
+        return(
+            <div></div>
+        )
+    }
+      
  }
 
 class SideBar extends React.Component {

@@ -4,7 +4,7 @@ import "./resourceList.styles.css"
 
 const ResourceList = ({data}) => {
     console.log(data)
-    const items = data.map((row) => {
+    const items =  [...data].reverse().map((row) => {
         return(
             <Resource row={row} />
         );

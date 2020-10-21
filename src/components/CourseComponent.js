@@ -32,7 +32,7 @@ class Course extends Component {
       this.props.history.push("/");
     }
     if(key == "2"){
-      this.props.history.push("/class");
+      this.props.history.push("/resources/"+this.state.course_id);
     }
     if(key == "3"){
       this.props.history.push("/");
@@ -119,14 +119,14 @@ class Course extends Component {
             Software Architecture 
           </h1>
         <div className="row">
-          <Notes notes={this.state.notes} />
+        {this.state.notes != null ? <Notes notes={this.state.notes} />: "" }  
         </div>
         <div className="row  mb-4">
           <div className="col mt-4">
             <ForumList course_id={this.state.course_id} />
           </div>
           <div className="col mt-4">
-            <StudyRoom studyrooms={this.state.studyrooms} />
+           {this.state.studyrooms != null ? <StudyRoom studyrooms={this.state.studyrooms} /> : "" } 
           </div>
         </div>
 

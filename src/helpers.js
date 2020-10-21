@@ -321,4 +321,66 @@ export const createAnswer = (id, idPost, idComment, content, userCreator, userCr
     return promise;
   };
 
+
+  export const getResources = (id_course) => {
+    let promise = new Promise((resolve, reject) => {
+        axios
+          .post(GraphQL_URL,
+            {
+              query:`
+              query{
+                allResourcesOfClass(id:${id_course}){
+                  idUser
+                  content
+                }
+              }
+              `
+            },
+              {
+                headers: {
+                  'Content-Type': 'application/json'
+                }
+              }
+            )
+          .then((res) => {
+            resolve(res);
+          })
+          .catch((error) => {
+            console.log(error);
+            reject(new Error(error));
+          });
+      });
+    return promise;
+  };
+
+  export const createResource = (content,id_course,nameUser) => {
+    let promise = new Promise((resolve, reject) => {
+        axios
+          .post(GraphQL_URL,
+            {
+              query:`
+              mutation{
+                createResource(resource:{idUser:"${nameUser}",idClase:${id_course},content:"${content}"}){
+                  message
+                  id
+                }
+              } 
+              `
+            },
+              {
+                headers: {
+                  'Content-Type': 'application/json'
+                }
+              }
+            )
+          .then((res) => {
+            resolve(res);
+          })
+          .catch((error) => {
+            console.log(error);
+            reject(new Error(error));
+          });
+      });
+    return promise;
+  };
  

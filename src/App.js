@@ -21,15 +21,15 @@ function App() {
 
   return (
     <Router>
+       <Route exact path="/register" component={Register}></Route>
       <AuthCheck fallback={<Login />}>
-        <Route exact path="/register" component={Register}></Route>
         <Route
           exact
           path="/course/:course_id"
           component={() => <Course logout={logout} />}
         ></Route>
-        <Route exact path="/class" component={Class}></Route>
-        <Route exact path="/forum/posts/:id" component={Forum}></Route>
+        <Route exact path="/resources/:course_id" component={() => <Class logout={logout} />}></Route>
+        <Route exact path="/forum/posts/:id" component={()=><Forum logout={logout} />}></Route>
         <Route exact path="/" component={() => <Courses logout={logout} />}></Route>
       </AuthCheck>
     </Router>

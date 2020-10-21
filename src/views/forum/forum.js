@@ -12,11 +12,13 @@ import { getPosts, createPost, createComment, createAnswer } from '../../helpers
 import 'bootstrap/dist/css/bootstrap.css';
 import ForumList from '../../components/forumList'
 import {useUser} from 'reactfire'
+import SideBar from "../../components/side-bar/SideBar"
+import { withRouter } from "react-router";
 
 
 
 
-const Forum = () => {
+const Forum = (props) => {
 
     const user = useUser();
     const id = useParams().id; //forum id
@@ -185,7 +187,39 @@ const Forum = () => {
 
     //console.log(forum)
 
+    const handlerSidebar = (key) => {
+        if(key == "1"){
+          props.history.push("/");
+        }
+        if(key == "2"){
+          props.history.goBack();
+        }
+        if(key == "3"){
+          props.logout();
+          props.history.push("/");
+        }
+      }
+
+    const data = [
+        {
+          id: 1,
+          text: "My Courses",
+          icon: "courses",
+        },
+        {
+          id: 2,
+          text: "Go Back",
+          icon: "back",
+        },
+        {
+          id: 3,
+          text: "Cerrar Sesión",
+          icon: "back",
+        },
+      ];
     return (
+        <div>
+        <SideBar data={data} handler={handlerSidebar} />
         <div className="content" style={{ margin: '5%' }}>
             
             <h1>Hola {user.displayName}</h1>
@@ -258,6 +292,7 @@ const Forum = () => {
                 onHide={() => setShowSuccessModal(false)}
             />
         </div>
+        </ div>
     )
 }
-export default Forum;
+export default withRouter(Forum);

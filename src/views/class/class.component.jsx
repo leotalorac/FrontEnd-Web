@@ -6,11 +6,12 @@ import Logo from "../../assets/images/logo_n.png";
 import ResourceList from "../../components/resourceList/resourceList.component";
 import Notes from "../../components/notes/notes"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {Button, Col, Row} from "react-bootstrap";
+import { Modal, Button, Form } from "react-bootstrap";
+import { Col, Row} from "react-bootstrap";
 import { faPlusCircle, faSearch } from "@fortawesome/free-solid-svg-icons";
 import TopNav from "../../components/topNav/topNav.component"
-import ModalResource from "../../components/modalResource/modalResource.component"
-import {getNotesByClass} from "../../helpers"
+import {createResource, getResources} from "../../helpers"
+import ModalResource from "../../components/modalResource/modalResource"
 
 class Class extends React.Component {
   constructor(props) {
@@ -18,47 +19,24 @@ class Class extends React.Component {
     this.state = {
     resources:[],
     notes:[],
-		showModal:false
+    showModal:false,
+    course_id: this.props.match.params.course_id,
+    showModalNote:false,
+    noteContent:""
 	};
   }
 
   componentDidMount(){
-	const data2 = [
-		{
-		  name: "Bryan Daniel Gomez",
-		  text:
-			"Este es el link de la clase de hoy: https://drive.google.com/drive/u/0/folders/1biPKmkQuVkx9RPTC1Fi2VCAN6h1enpnA",
-		  icon: "daniel",
-		},
-		{
-		  name: "Bryan Daniel Gomez",
-		  text: "My Courses",
-		  icon: "daniel",
-		},
-		{
-		  name: "Bryan Daniel Gomez",
-		  text: "My Courses",
-		  icon: "juan",
-		},
-		{
-		  name: "Bryan Daniel Gomez",
-		  text: "My Courses",
-		  icon: "juan",
-		},
-	  ];
-    this.setState({resources:data2});
+
     
 
-    getNotesByClass(1).then((res) => {
-      const notesData = res.data.data.getNotesByClass.map((item) => ({
-        value: item,
-      }));
-      const notesList = [];
-      for (let index = 0; index < notesData.length; index++) {
-        notesList.push(notesData[index])
-      }
-      this.setState({notes:notesList})
-    }).catch()
+    getResources(this.state.course_id)
+    .then((res) => {
+      this.setState({ resources: res.data.data.allResourcesOfClass }, () =>
+        console.log(res.data.data.allResourcesOfClass)
+      );
+    })
+    .catch();
 
   }
 
@@ -81,27 +59,75 @@ class Class extends React.Component {
 	this.setState({showModal:false});
 }
 
+handlerSidebar = (key) => {
+  if(key == "1"){
+    this.props.history.push("/");
+  }
+  if(key == "2"){
+    this.props.history.push("/course/"+this.state.course_id);
+  }
+  if(key == "3"){
+    this.props.logout();
+    this.props.history.push("/");
+  }
+}
+
+handlerClick = (name) => {
+  const note = this.state.noteContent;
+  if(note.length <= 20 && note.length > 0){
+    createResource(note, this.state.course_id,name) 
+    .then((res) => {
+      const aux = {
+        idUser:name,
+        content:note
+      };
+      this.setState({ resources: [...this.state.resources, aux] });
+      this.setState({ showModalNote: false })
+    })
+    .catch();
+  } else {
+
+  }
+
+};
+
   render() {
-    
+    const data = [
+      {
+        id: 1,
+        text: "My Courses", 
+        icon: "courses",
+      },
+      {
+        id: 2,
+        text: "Go Back",
+        icon: "back",
+      },
+      {
+        id: 3,
+        text: "Cerrar Sesión",
+        icon: "back",
+      },
+    ];
     
 
     return (
       <div>
-
+     <SideBar data={data} handler={this.handlerSidebar} />
         <div className="content">
 
-		 <TopNav handlerSearch={this.handlerSearch} text="Crear Recurso" handlerClick={this.handlerClick} />
+		 <TopNav handlerSearch={this.handlerSearch} text="Create Resource" handlerClick={() => this.setState({showModalNote:true})} />
           <h1 className="title">
             Software Architecture {">"}
             {">"} October 12{" "}
           </h1>
-          <h5 className="subtitle">Resources</h5>
+          <h5 className="subtitle">Resources</h5> 
           <hr />
           <ResourceList data={this.state.resources} />
-          <h5 className="subtitle">Notes</h5>
-          <hr />
-          <Notes data={this.state.notes} />
+          
         </div>
+      <ModalResource showModalNote={this.state.showModalNote} hideModal={() => {this.setState({showModalNote:false})}} update={(e) => this.setState({noteContent:e.target.value})} handlerClick={this.handlerClick} />
+
       </div>
     );
   }
