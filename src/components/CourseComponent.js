@@ -19,6 +19,7 @@ class Course extends Component {
     this.state = {
       studyrooms: [],
       course_id: this.props.match.params.course_id,
+      course_name: this.props.match.params.course_name,
       notes: [],
       notesPerPage: 2,
       currentPage: 1,
@@ -116,7 +117,7 @@ class Course extends Component {
           handlerClick={() => this.setState({ showModalNote: true })}
         />
          <h1 className="title">
-            Software Architecture 
+            {this.state.course_name} 
           </h1>
         <div className="row">
         {this.state.notes != null ? <Notes notes={this.state.notes} />: "" }  

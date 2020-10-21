@@ -25,7 +25,7 @@ function App() {
       <AuthCheck fallback={<Login />}>
         <Route
           exact
-          path="/course/:course_id"
+          path="/course/:course_name/:course_id"
           component={() => <Course logout={logout} />}
         ></Route>
         <Route exact path="/resources/:course_id" component={() => <Class logout={logout} />}></Route>

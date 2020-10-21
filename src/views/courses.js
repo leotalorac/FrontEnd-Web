@@ -135,7 +135,7 @@ const Courses = (props) => {
                 </Row>
                 <Row>
                     {courses.map((course, index) =>
-                        <Link style={{ margin: '1%' }} to={"/course/" + course.value.id_course}>
+                        <Link style={{ margin: '1%' }} to={"/course/" + course.value.name + "/" + course.value.id_course}>
                             <Card key={index} style={{ width: '18rem', margin: '1%', backgroundColor: "white" }}>
                                 <Card.Body>
                                     <Card.Title style={{ color: "#5E90F2", fontWeight: "bold" }}>{course.value.name}</Card.Title>

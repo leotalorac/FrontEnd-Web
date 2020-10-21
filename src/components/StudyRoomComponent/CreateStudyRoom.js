@@ -9,7 +9,11 @@ import {
     KeyboardTimePicker,
     KeyboardDatePicker,
   } from '@material-ui/pickers';
+import {useUser} from 'reactfire'
+
 function CreateStudyRoom(props){
+
+    var user = useUser();
 
     const [selectedDate, setSelectedDate] = React.useState(new Date('2020-10-20T21:11:54'));
     const [selectedName, setSelectedName] = React.useState();
