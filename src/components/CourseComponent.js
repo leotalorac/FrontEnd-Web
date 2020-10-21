@@ -1,3 +1,5 @@
+import {getStudyRooms} from '../shared/studyroomHelpers';
+import Background from '../assets/images/logo_n.png';
 import React, { Component } from "react";
 import { withRouter } from "react-router";
 import StudyRoom from "./StudyRoomComponent/StudyroomComponent";
@@ -15,7 +17,7 @@ class Course extends Component {
     super(props);
 
     this.state = {
-      studyrooms: STUDYROOMS,
+      studyrooms: [],
       course_id: this.props.match.params.course_id,
       notes: [],
       notesPerPage: 2,
@@ -50,6 +52,13 @@ class Course extends Component {
         );
       })
       .catch();
+      
+      getStudyRooms()
+        .then((res) => {
+            this.setState({
+                studyrooms: res.data.data.get_study_rooms
+            })
+        })
   }
 
   handlerClick = () => {
