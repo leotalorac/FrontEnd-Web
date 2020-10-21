@@ -13,11 +13,12 @@ import {
 ReactDOM.render(
     <FirebaseAppProvider firebaseConfig={firebaseConfig}>
       <Suspense fallback={'Conectando la aplicación'}>
+        <BrowserRouter>
         <App />
+        </BrowserRouter>
       </Suspense>
-    </FirebaseAppProvider>
-  <React.StrictMode>
-  </React.StrictMode>,
+    </FirebaseAppProvider>,
+ 
   document.getElementById('root')
 );
 
