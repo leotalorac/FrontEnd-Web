@@ -40,7 +40,9 @@ function RenderStudyRoomItem({studyroom}){
 
 const StudyRoom = (props) => { 
     const [show, setShow] = useState(false);
-    
+    const [renderice, setRenderice] = useState(false);
+
+    function Renderice(){setRenderice(!renderice);}
     function handleClose() {setShow(false);}
     function handleOpen() {setShow(true);}
 
@@ -75,6 +77,7 @@ const StudyRoom = (props) => {
                         show={show} 
                         handleClose={handleClose}   
                         course_id={props.course_id}
+                        renderice={Renderice}
                     />
                 
             </div>
