@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 import SideBar from "../components/side-bar/SideBar";
 import 'bootstrap/dist/css/bootstrap.css';
 import { withRouter } from "react-router";
-
+import swal from 'sweetalert';
 
 
 
@@ -28,6 +28,7 @@ const Courses = (props) => {
         function submitHandler(event) {
             event.preventDefault();
             createCourse(1, newCourseName, "0").then((res) => {
+                swal("Creando Curso..!", "...", "success");
                 setModalShow(false)
                 setShow(true)
             })
