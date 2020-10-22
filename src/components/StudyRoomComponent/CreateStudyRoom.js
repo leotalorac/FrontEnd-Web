@@ -10,6 +10,7 @@ import {
     KeyboardDatePicker,
   } from '@material-ui/pickers';
 import {useUser} from 'reactfire'
+import {createSR} from '../../shared/studyroomHelpers';
 
 function CreateStudyRoom(props){
 
@@ -35,12 +36,20 @@ function CreateStudyRoom(props){
     }
 
     function handleSubmit(event){
-        alert("date: " + selectedDate +
-              "\nname: " + selectedName + 
-              "\nduration: " + selectedDuration + 
-              "\ndescription: " + selectedDescription);
+        
+        createSR(selectedName,selectedDescription,
+                selectedDate.toISOString(),selectedDuration,
+                user.displayName,user.email,props.course_id)
+        .then((res) => {
+            alert("Sala de Estudio creada exitosamente");
+            props.handleClose();
+
+        })
         event.preventDefault();
+        
     }
+
+    
     return (
        <>
           <Modal show={props.show} onHide={props.handleClose}>

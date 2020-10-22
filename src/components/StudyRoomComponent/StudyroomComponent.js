@@ -74,6 +74,7 @@ const StudyRoom = (props) => {
                     <CreateStudyRoom
                         show={show} 
                         handleClose={handleClose}   
+                        course_id={props.course_id}
                     />
                 
             </div>

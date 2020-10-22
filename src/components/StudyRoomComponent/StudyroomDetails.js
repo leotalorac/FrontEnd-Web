@@ -1,10 +1,44 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { Button, Modal, Row, Col, Container} from "react-bootstrap";
 import './StudyroomComponent.css';
 import 'bootstrap/dist/css/bootstrap.css';
-import { BsFillPersonPlusFill } from 'react-icons/bs';
+import { BsFillPersonPlusFill,BsFillPersonDashFill } from 'react-icons/bs';
+import {useUser} from 'reactfire'
+import {inscribeUser,deleteUser} from '../../shared/studyroomHelpers';
+
+
 
 function StudyRoomDetails(props) {
+
+    const [flagButtonInscribe, SetflagButtonInscribe] = useState(true);
+    var user = useUser();
+
+    useEffect(() => {
+        props.studyroom.students.map((student) => {
+            if((student.email == user.email) && (student.name == user.displayName)){
+                SetflagButtonInscribe(false);
+            }
+        })
+    })
+
+    function handleInscribe(){
+        inscribeUser(props.studyroom._id,user.displayName,"picture",user.email).then((res) => {
+            SetflagButtonInscribe(true);
+            alert("Te haz inscrito correctamente! " + user.displayName);
+        })
+        
+    }
+
+    function handleDelete(){
+        props.studyroom.students.map((student) => {
+            if((student.email == user.email) && (student.name == user.displayName)){
+                deleteUser(props.studyroom._id,student._id).then((res) => {
+                    SetflagButtonInscribe(false);
+                    alert("Te haz desinscrito correctamente! " + user.displayName)
+                })
+            }
+        })
+    }
 
     const students = props.studyroom.students.map((student) => {
         return(
@@ -71,9 +105,16 @@ function StudyRoomDetails(props) {
                 
                 <div id="ContainerAlert">
                 <Row>
-                    <Button variant="primary">
+                    
+                    {flagButtonInscribe
+                    ? <Button variant="primary" onClick={() => handleInscribe()}>
                             <BsFillPersonPlusFill id="iconAddSR"/>
                     </Button>
+                    : <Button id="removeSRButton" variant="primary" onClick={() => handleDelete()}>
+                            <BsFillPersonDashFill id="iconRemoveSR"/>
+                    </Button>
+                    }
+                    
                     <div id="TitleAlert">
                         Una vez confirmes asistencia recibiras el link de la reunión a tu correo
                     </div>

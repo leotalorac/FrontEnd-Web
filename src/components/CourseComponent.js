@@ -127,7 +127,7 @@ class Course extends Component {
             <ForumList course_id={this.state.course_id} />
           </div>
           <div className="col mt-4">
-            <StudyRoom studyrooms={this.state.studyrooms} id={this.state.course_id}/>
+            <StudyRoom studyrooms={this.state.studyrooms} course_id={this.state.course_id}/>
           </div>
         </div>
 

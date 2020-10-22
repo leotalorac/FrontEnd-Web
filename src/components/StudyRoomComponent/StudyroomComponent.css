@@ -23,7 +23,8 @@
     width: 100%;
     align-items: center;
     justify-content: center;
-    width: 85%;
+    width: 100%;
+    margin-top: 3%;
 }
 #StudyroomsTitle{
     text-align: center;
@@ -57,5 +58,12 @@
   }
 #iconAddSR{
     vertical-align: baseline;
+}
+#iconRemoveSR{
+    vertical-align: baseline;
+}
+#removeSRButton{
+    background-color: #b12c2c;
+    border-color: #b12c2c;
 }
 

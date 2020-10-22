@@ -3,41 +3,7 @@ import axios from "axios";
 
 const GraphQL_URL = "http://3.138.86.155/graphql"
 
-export const postStudyRoom = () => {
-  let promise = new Promise((resolve, reject) => {
-    axios
-    .post(GraphQL_URL, {
-      mutation:`
-        mutation{
-          create_study_room{
-            name: "III - Reunión / Calculo Multivariado",
-            description: "Welcome to Tijuana",
-            date: "2020-10-07T00:46:15.794Z",
-            duration: 30,
-            ownerName: "Ana Guzman",
-            ownerEmail: "pedromosquete69@gmail.com",
-            courseId: "courseId2"
-          }
-        }
-      `,
-        variables: {}
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        }
-      )
-      .then((res) => {
-        resolve(res);
-      })
-      .catch((error) => {
-        console.log(error);
-        reject(error);
-      });
-  });
-  return promise;
-};
+
 
 export const getStudyRooms = async (id) => {
   let promise = new Promise((resolve, reject) => {
@@ -88,3 +54,121 @@ export const getStudyRooms = async (id) => {
   });
   return promise;
 };
+
+export const inscribeUser = (sr_id, student_name, student_picture,student_email) => {
+    
+  let promise = new Promise((resolve, reject) => {
+        axios
+        .post(GraphQL_URL,
+          {
+            query:`
+            mutation{
+              inscribe_student(
+                sr_id: "${sr_id}",
+                student: {
+                  name: "${student_name}"
+                  picture: "${student_picture}"
+                  email: "${student_email}"
+                }
+                 
+                
+                ){
+                name
+              }
+            }
+            `
+          },
+            {
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            }
+          )
+        .then((res) => {
+          resolve(res);
+        })
+        .catch((error) => {
+          console.log(error);
+          reject(new Error(error));
+        });
+    });
+  return promise;
+}
+
+export const deleteUser = (sr_id, student_id) => {
+    
+  let promise = new Promise((resolve, reject) => {
+        axios
+        .post(GraphQL_URL,
+          {
+            query:`
+            mutation{
+              delete_student(
+                sr_id: "${sr_id}",
+                rmstudent: {
+                  _id: "${student_id}"
+                }
+                 
+                
+                ){
+                name
+              }
+            }
+            `
+          },
+            {
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            }
+          )
+        .then((res) => {
+          resolve(res);
+        })
+        .catch((error) => {
+          console.log(error);
+          reject(new Error(error));
+        });
+    });
+  return promise;
+}
+
+export const createSR = (name, description, date, duration, ownername, ownerEmail, courseId) => {
+    
+  let promise = new Promise((resolve, reject) => {
+        axios
+        .post(GraphQL_URL,
+          {
+            query:`
+            mutation{
+              create_study_room(studyroom:
+                {
+                  name: "${name}",
+                  description: "${description}",
+                  date: "${date}",
+                  duration: ${duration},
+                  ownerName: "${ownername}",
+                  ownerEmail: "${ownerEmail}",
+                  courseId: "${courseId}"
+                }){
+                name
+              }
+            }
+            `
+          },
+            {
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            }
+          )
+        .then((res) => {
+          resolve(res);
+        })
+        .catch((error) => {
+          console.log(error);
+          reject(new Error(error));
+        });
+    });
+  return promise;
+}
