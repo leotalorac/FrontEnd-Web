@@ -48,7 +48,6 @@ export default (props) =>{
                         <Button style={{ marginTop: "2%", width: "100%" }} variant="primary" onClick={login}>
                             Ingresar
                      </Button>
-                     <button onClick={logout}> Cerrar sesión </button>
                     </Form.Group>
                     <div style={{ textAlign: "center" }}>
                         <Link to={"register"}>

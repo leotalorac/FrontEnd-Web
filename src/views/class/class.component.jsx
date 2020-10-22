@@ -64,7 +64,7 @@ handlerSidebar = (key) => {
     this.props.history.push("/");
   }
   if(key == "2"){
-    this.props.history.push("/course/"+this.state.course_id);
+    this.props.history.goBack();
   }
   if(key == "3"){
     this.props.logout();
