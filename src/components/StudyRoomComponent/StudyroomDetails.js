@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import { BsFillPersonPlusFill,BsFillPersonDashFill } from 'react-icons/bs';
 import {useUser} from 'reactfire'
 import {inscribeUser,deleteUser} from '../../shared/studyroomHelpers';
-
+import swal from 'sweetalert';
 
 
 function StudyRoomDetails(props) {
@@ -24,7 +24,7 @@ function StudyRoomDetails(props) {
     function handleInscribe(){
         inscribeUser(props.studyroom._id,user.displayName,"picture",user.email).then((res) => {
             SetflagButtonInscribe(true);
-            alert("Te haz inscrito correctamente! " + user.displayName);
+            swal("Inscribiendo!", user.displayName , "success");
         })
         
     }
@@ -34,7 +34,22 @@ function StudyRoomDetails(props) {
             if((student.email == user.email) && (student.name == user.displayName)){
                 deleteUser(props.studyroom._id,student._id).then((res) => {
                     SetflagButtonInscribe(false);
-                    alert("Te haz desinscrito correctamente! " + user.displayName)
+                    swal({
+                        title: "¿Estas seguro?",
+                        text: "Una vez eliminada la inscripción no saldrá en tu calendar",
+                        icon: "warning",
+                        buttons: true,
+                        dangerMode: true,
+                      })
+                      .then((willDelete) => {
+                        if (willDelete) {
+                          swal("La inscripción ha sido cancelada exitosamente", {
+                            icon: "success",
+                          });
+                        } else {
+                          swal("Intentalo mas tarde");
+                        }
+                      });
                 })
             }
         })

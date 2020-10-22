@@ -11,6 +11,7 @@ import {
   } from '@material-ui/pickers';
 import {useUser} from 'reactfire'
 import {createSR} from '../../shared/studyroomHelpers';
+import swal from 'sweetalert';
 
 function CreateStudyRoom(props){
 
@@ -41,7 +42,8 @@ function CreateStudyRoom(props){
                 selectedDate.toISOString(),selectedDuration,
                 user.displayName,user.email,props.course_id)
         .then((res) => {
-            alert("Sala de Estudio creada exitosamente");
+            swal("Creando...", user.displayName , "success");
+            props.renderice();
             props.handleClose();
 
         })
