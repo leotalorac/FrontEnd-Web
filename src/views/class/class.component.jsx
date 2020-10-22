@@ -12,6 +12,7 @@ import { faPlusCircle, faSearch } from "@fortawesome/free-solid-svg-icons";
 import TopNav from "../../components/topNav/topNav.component"
 import {createResource, getResources} from "../../helpers"
 import ModalResource from "../../components/modalResource/modalResource"
+import swal from 'sweetalert';
 
 class Class extends React.Component {
   constructor(props) {
@@ -77,6 +78,7 @@ handlerClick = (name) => {
   if(note.length <= 20 && note.length > 0){
     createResource(note, this.state.course_id,name) 
     .then((res) => {
+      swal("Creando Recurso!" , "...","success");
       const aux = {
         idUser:name,
         content:note

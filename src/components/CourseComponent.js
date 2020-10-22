@@ -11,7 +11,7 @@ import Notes from "../components/notesList/notes.component";
 import { getNotesByClass, createNote } from "../helpers";
 import TopNav from "../components/topNav/topNav.component";
 import SideBar from "../components/side-bar/SideBar";
-
+import swal from 'sweetalert';
 class Course extends Component {
   constructor(props) {
     super(props);
@@ -67,6 +67,7 @@ class Course extends Component {
     if(note.length <= 20 && note.length > 0){
       createNote(note, this.state.course_id) 
       .then((res) => {
+        swal("Creando Nota..!", "...", "success");
         const aux = {
           id_note: 31,
           content: note,

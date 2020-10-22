@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 import { getForumsByCourse, createForum } from '../helpers'
 import 'bootstrap/dist/css/bootstrap.css';
 import {useUser} from 'reactfire'
-
+import swal from 'sweetalert';
 
 
 const ForumList = (course_id) => {
@@ -27,6 +27,7 @@ const ForumList = (course_id) => {
     function submitHandler(event) {
       event.preventDefault();
       createForum(user.displayName,user.uid,course_id.course_id, newForumName).then((res) => {
+        swal("Creando Foro..!", "...",  "success");
         setModalShow(false)
         setShowSuccessModal(!showSuccessModal)
       })
