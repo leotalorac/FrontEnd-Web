@@ -29,7 +29,7 @@ const Courses = (props) => {
             event.preventDefault();
             createCourse(1, newCourseName, "0").then((res) => {
                 setModalShow(false)
-                setShow(true)
+                setShow(!show)
             })
         }
 
