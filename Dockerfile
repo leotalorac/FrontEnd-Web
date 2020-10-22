@@ -12,6 +12,4 @@ RUN npm install -g http-server
 
 EXPOSE 80
 
-RUN http-server /usr/src/app -p 80
-
-CMD ["npm","run"]
+CMD ["http-server","/usr/src/app/build","-p","80"]
