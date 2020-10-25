@@ -8,12 +8,14 @@ import Col from 'react-bootstrap/Col'
 import Modal from 'react-bootstrap/Modal'
 import Container from 'react-bootstrap/Container'
 import { useParams, Link } from "react-router-dom";
-import { getPosts, createPost, createComment, createAnswer } from '../../helpers'
+import { getPosts, createPost, createComment, createAnswer,deletePost, deleteComment, deleteAnswer } from '../../helpers'
 import 'bootstrap/dist/css/bootstrap.css';
 import ForumList from '../../components/forumList'
-import {useUser} from 'reactfire'
+import { useUser } from 'reactfire'
 import SideBar from "../../components/side-bar/SideBar"
 import { withRouter } from "react-router";
+import { IoIosTrash } from "react-icons/io";
+import swal from 'sweetalert';
 
 
 
@@ -44,7 +46,6 @@ const Forum = (props) => {
             console.log(res)
             setModalShow(false)
             setShowSuccessModal(!showSuccessModal)
-            window.location.reload(false)
         })
     }
 
@@ -60,7 +61,6 @@ const Forum = (props) => {
             console.log(res)
             setModalShow(false)
             setShowSuccessModal(!showSuccessModal)
-            window.location.reload(false)
         })
     }
 
@@ -69,6 +69,27 @@ const Forum = (props) => {
         setAnswerContent(event.target.value)
         setAnswerPostID(event.target.name.substr(0, 24))
         setAnswerCommentID(event.target.name.substr(25, 50))
+    }
+
+    function deletePostFunction(idPost) {
+        deletePost(id, idPost).then((res) => {
+            swal("Eliminando publicación..!", "...",  "success");
+            setShowSuccessModal(!showSuccessModal)
+        })
+    }
+
+    function deleteCommentFunction(idPost, idComment) {
+        deleteComment(id, idPost, idComment).then((res) => {
+            swal("Eliminando comentario..!", "...",  "success");
+            setShowSuccessModal(!showSuccessModal)
+        })
+    }
+
+    function deleteAnswerFunction(idPost, idComment, idAnswer) {
+        deleteAnswer(id, idPost, idComment, idAnswer).then((res) => {
+            swal("Eliminando respuesta..!", "...",  "success");
+            setShowSuccessModal(!showSuccessModal)
+        })
     }
 
 
@@ -81,7 +102,7 @@ const Forum = (props) => {
 
         function submitPostHandler(event) {
             event.preventDefault();
-            createPost(id,newPostTitle, newPostContent, user.displayName, "0").then((res) => {
+            createPost(id, newPostTitle, newPostContent, user.displayName, "0").then((res) => {
                 console.log(res)
                 setModalShow(false)
                 setShowSuccessModal(!showSuccessModal)
@@ -144,6 +165,7 @@ const Forum = (props) => {
                 userCreator: String,
                 createdAt: Date,
                 answer: [{
+                    _id: String,
                     content: String,
                     userCreator: String,
                     createdAt: Date,
@@ -163,109 +185,116 @@ const Forum = (props) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [showSuccessModal])
 
-    //console.log(user.uid)
+    console.log(forum)
 
     const handlerSidebar = (key) => {
-        if(key == "1"){
-          props.history.push("/");
+        if (key == "1") {
+            props.history.push("/");
         }
-        if(key == "2"){
-          props.history.goBack();
+        if (key == "2") {
+            props.history.goBack();
         }
-        if(key == "3"){
-          props.logout();
-          props.history.push("/");
+        if (key == "3") {
+            props.logout();
+            props.history.push("/");
         }
-      }
+    }
 
     const data = [
         {
-          id: 1,
-          text: "My Courses",
-          icon: "courses",
+            id: 1,
+            text: "My Courses",
+            icon: "courses",
         },
         {
-          id: 2,
-          text: "Go Back",
-          icon: "back",
+            id: 2,
+            text: "Go Back",
+            icon: "back",
         },
         {
-          id: 3,
-          text: "Cerrar Sesión",
-          icon: "back",
+            id: 3,
+            text: "Cerrar Sesión",
+            icon: "back",
         },
-      ];
+    ];
     return (
         <div>
-        <SideBar data={data} handler={handlerSidebar} />
-        <div className="content" style={{ margin: '5%' }}>
-            
-            <h1>Hola {user.displayName}</h1>
-            <Row>
-                <Col>
-                    <h1 style={{ fontWeight: "bold", color: "#5E90F2" }}>{forum.name}</h1>
-                </Col>
-                <Col>
-                    <Button style={{ backgroundColor: "#5E90F2", marginLeft: "70%" }} onClick={() => setModalShow(true)}>
-                        Añadir publicación
+            <SideBar data={data} handler={handlerSidebar} />
+            <div className="content" style={{ margin: '5%' }}>
+                <Row>
+                    <Col>
+                        <h1 style={{ fontWeight: "bold", color: "#5E90F2" }}>{forum.name}</h1>
+                    </Col>
+                    <Col>
+                        <Button style={{ backgroundColor: "#5E90F2", marginLeft: "70%" }} onClick={() => setModalShow(true)}>
+                            Añadir publicación
                 </Button>
-                    <NewPostModal
-                        show={modalShow}
-                        onHide={() => setModalShow(false)}
-                    />
-                </Col>
-            </Row>
-            <p>Usuario administrador: {forum.userCreator}</p>
-            <ListGroup>
-                {forum.posts.map((post, index) =>
+                        <NewPostModal
+                            show={modalShow}
+                            onHide={() => setModalShow(false)}
+                        />
+                    </Col>
+                </Row>
+                <p>Usuario administrador: {forum.userCreator}</p>
+                <ListGroup>
+                    {forum.posts.map((post, index) =>
 
-                    <Card style={{ marginBottom: '2%', backgroundColor: "#5E90F2" }}>
-                        <Card.Header style={{ color: "white", fontWeight: "bold" }}>{post.title} | {post.userCreator}</Card.Header>
+                        <Card style={{ marginBottom: '2%', backgroundColor: "#5E90F2" }}>
+                            <Card.Header style={{ color: "white", fontWeight: "bold" }}>{post.title} | {post.userCreator}</Card.Header>
 
-                        <ListGroup.Item key={index} >
-                            <p style={{ marginBottom: "5%" }}>{post.content}</p>
-                            {post.comments.length !== 0 && !commentsShow && <Link style={{ color: "#5E90F2" }} onClick={() => toggleCommentsShow(true)}>Mostrar comentarios: {post.comments.length}</Link>}
-                            {commentsShow && <Link style={{ color: "#5E90F2" }} onClick={() => toggleCommentsShow(false)}>Esconder comentarios</Link>}
+                            <ListGroup.Item key={index} >
+                                <p style={{ marginBottom: "5%" }}>{post.content}</p>
+                                {post.comments.length !== 0 && !commentsShow && <Link style={{ color: "#5E90F2" }} onClick={() => toggleCommentsShow(true)}>Mostrar comentarios: {post.comments.length}</Link>}
+                                {commentsShow && <Link style={{ color: "#5E90F2" }} onClick={() => toggleCommentsShow(false)}>Esconder comentarios</Link>}
 
-                            {commentsShow && forum.posts[index].comments.map((comment, index2) =>
-                            
-                                <ListGroup.Item style={{ marginBottom: "2%", marginTop: "1%" }} key={index2} >
-                                    <p style={{ fontWeight: "lighter" }}>{comment.userCreator} | {String(comment.createdAt).substr(0, 10)}</p>
-                                    <p>{comment.content}</p>
-                                    {comment.answer.length !== 0 && !answersShow && <Link style={{ color: "#5E90F2" }} onClick={() => toggleAnswersShow(true)}>Mostrar respuestas: {comment.answer.length}</Link>}
-                                    {answersShow && <Link style={{ color: "#5E90F2" }} onClick={() => toggleAnswersShow(false)}>Esconder respuestas</Link>}
+                                {commentsShow && forum.posts[index].comments.map((comment, index2) =>
 
-                                    {answersShow && forum.posts[index].comments[index2].answer.map((answer, index3) =>
+                                    <ListGroup.Item style={{ marginBottom: "2%", marginTop: "1%" }} key={index2} >
+                                        <p style={{ fontWeight: "lighter" }}>{comment.userCreator} | {String(comment.createdAt).substr(0, 10)}</p>
+                                        <p>{comment.content}</p>
+                                        {comment.answer.length !== 0 && !answersShow && <Link style={{ color: "#5E90F2" }} onClick={() => toggleAnswersShow(true)}>Mostrar respuestas: {comment.answer.length}</Link>}
+                                        {answersShow && <Link style={{ color: "#5E90F2" }} onClick={() => toggleAnswersShow(false)}>Esconder respuestas</Link>}
 
-                                        <ListGroup.Item style={{ borderBlockWidth: "0", marginBottom: "2%", marginTop: "1%" }} key={index3} >
-                                            <p style={{ marginBottom: "2%", fontWeight: "lighter" }}>{answer.userCreator} | {String(answer.createdAt).substr(0, 10)}</p>
-                                            <p>{answer.content}</p>
-                                        </ListGroup.Item>
-                                    )}
-                                    <Form onSubmit={submitAnswerHandler} style={{ marginTop: "1%" }}>
-                                        <Form.Group controlId="answerTextarea1" onChange={changeAnswerContentHandler}>
-                                            <Form.Control as="textarea" rows="3" name={post._id +"|"+ comment._id}  />
-                                            <Button type="submit" style={{ backgroundColor: "#5E90F2", marginTop: "1%" }} >
-                                                Responder
-                                            </Button>
-                                        </Form.Group>
-                                    </Form>
-                                </ListGroup.Item>
-                            )}
-                            <Form onSubmit={submitCommentHandler} style={{ marginTop: "1%" }}>
-                                <Form.Group controlId="commentTextarea1" onChange={changeCommentContentHandler}>
-                                    <Form.Control name={post._id} as="textarea" rows="3" />
-                                    <Button type="submit" style={{ backgroundColor: "#5E90F2", marginTop: "1%" }} >
-                                        Comentar
+                                        {answersShow && forum.posts[index].comments[index2].answer.map((answer, index3) =>
+
+                                            <ListGroup.Item style={{ borderBlockWidth: "0", marginBottom: "2%", marginTop: "1%" }} key={index3} >
+                                                <p style={{ marginBottom: "2%", fontWeight: "lighter" }}>{answer.userCreator} | {String(answer.createdAt).substr(0, 10)}</p>
+                                                <p>{answer.content}</p>
+                                                {user.displayName === answer.userCreator && <Button onClick={()=>{deleteAnswerFunction(post._id, comment._id, answer._id)}} style={{ backgroundColor: "#FE4A49", marginTop: "1%" }} >
+                                                    <IoIosTrash size={20} />
+                                                </Button>}
+                                            </ListGroup.Item>
+                                        )}
+                                        <Form onSubmit={submitAnswerHandler} style={{ marginTop: "1%" }}>
+                                            <Form.Group controlId="answerTextarea1" onChange={changeAnswerContentHandler}>
+                                                <Form.Control as="textarea" rows="3" name={post._id + "|" + comment._id} />
+                                                <Button type="submit" style={{ backgroundColor: "#5E90F2", marginTop: "1%" }} >
+                                                    Responder
+                                                </Button>
+                                                {user.displayName === comment.userCreator && <Button onClick={()=>{deleteCommentFunction(post._id, comment._id)}} style={{ backgroundColor: "#FE4A49", marginLeft: "1%", marginTop: "1%" }} >
+                                                    <IoIosTrash size={20} />
+                                                </Button>}
+                                            </Form.Group>
+                                        </Form>
+                                    </ListGroup.Item>
+                                )}
+                                <Form onSubmit={submitCommentHandler} style={{ marginTop: "1%" }}>
+                                    <Form.Group controlId="commentTextarea1" onChange={changeCommentContentHandler}>
+                                        <Form.Control name={post._id} as="textarea" rows="3" />
+                                        <Button type="submit" style={{ backgroundColor: "#5E90F2", marginTop: "1%" }} >
+                                            Comentar
                                   </Button>
-                                </Form.Group>
-                            </Form>
-                        </ListGroup.Item>
-                    </Card>
+                                        {user.displayName === post.userCreator && <Button onClick={()=>{deletePostFunction(post._id)}} style={{ backgroundColor: "#FE4A49", marginLeft: "1%", marginTop: "1%" }} >
+                                            <IoIosTrash size={20} />
+                                        </Button>}
+                                    </Form.Group>
+                                </Form>
+                            </ListGroup.Item>
+                        </Card>
 
-                )}
-            </ListGroup>
-        </div>
+                    )}
+                </ListGroup>
+            </div>
         </ div>
     )
 }
