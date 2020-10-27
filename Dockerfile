@@ -8,6 +8,8 @@ COPY package.json /usr/src/app
 
 COPY . /usr/src/app
 
+COPY .htaccess /usr/src/app/build
+
 RUN npm install -g http-server
 
 EXPOSE 80
