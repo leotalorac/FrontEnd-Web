@@ -6,12 +6,10 @@ WORKDIR /usr/src/app
 
 COPY package.json /usr/src/app
 
+RUN npm install
+
 COPY . /usr/src/app
 
-COPY .htaccess /usr/src/app/build
+EXPOSE 3000
 
-RUN npm install -g http-server
-
-EXPOSE 80
-
-CMD ["http-server","/usr/src/app/build","-p","80"]
+CMD ["npm","start"]
