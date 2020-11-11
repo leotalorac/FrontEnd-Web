@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // IP's
-const FORUM_IP = "https://52.200.134.90:3000"
+const FORUM_IP = "https://3.225.10.138:3000"
 const GraphQL_URL = "https://3.238.50.131/graphql"
 //URLS
 const URL_FORUMS = `${FORUM_IP}/forums`;
