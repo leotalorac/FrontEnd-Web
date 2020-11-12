@@ -16,7 +16,7 @@ export const LDAPCreateUser = (email, name, surName, password) => {
         {
           query: `
           mutation {
-            LDAPCreateUser(user: {email: "${email}", name: ""${name}"", surName: ""${surName}"", password: ""${password}""}) {
+            LDAPCreateUser(user: {email: "${email}", name: "${name}", surName: "${surName}", password: "${password}"}) {
               status
             }
           }

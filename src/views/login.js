@@ -21,9 +21,9 @@ export default (props) =>{
 
     const login = async()=>{
         LDAPAuthUser(email, password).then((res) => {
-            console.log(res.data.LDAPAuthUser.status)
-            if(res.data.LDAPAuthUser.status == true){
-                await firebase.auth().signInWithEmailAndPassword(email,password).then(function(result) {
+            console.log(res)
+            if(res.data.data.LDAPAuthUser.status == true){
+                 firebase.auth().signInWithEmailAndPassword(email,password).then(function(result) {
                     history.push("/")
                   }).catch(function(error) {
                     alert("no login")
@@ -41,8 +41,8 @@ export default (props) =>{
     function handleSubmit(event){
 
         LDAPCreateUser(emailReg, displayNameReg,displayNameReg, passwordReg ).then((res) => {
-            console.log(res.data.LDAPCreateUser.status)
-            if(res.data.LDAPCreateUser.status){
+            console.log(res)
+            if(res.data.data.LDAPCreateUser.status){
                 RegisterUser(emailReg,displayNameReg, passwordReg).then((res) => {
                     setShowLogin(true);
                     setEmailReg("");
