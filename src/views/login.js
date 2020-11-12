@@ -8,7 +8,7 @@ import Logo from '../images/logo.png'
 import { render } from '@testing-library/react';
 import 'firebase/auth'
 import {useFirebaseApp} from 'reactfire'
-import { RegisterUser } from '../helpers';
+import { RegisterUser, LDAPAuthUser, LDAPCreateUser } from '../helpers';
 
 
 export default (props) =>{
@@ -20,12 +20,18 @@ export default (props) =>{
     const firebase = useFirebaseApp();
 
     const login = async()=>{
-        await firebase.auth().signInWithEmailAndPassword(email,password).then(function(result) {
-            history.push("/")
-          }).catch(function(error) {
-            alert("no login")
-          });
-
+        LDAPAuthUser(email, password).then((res) => {
+            console.log(res.data.LDAPAuthUser.status)
+            if(res.data.LDAPAuthUser.status == true){
+                await firebase.auth().signInWithEmailAndPassword(email,password).then(function(result) {
+                    history.push("/")
+                  }).catch(function(error) {
+                    alert("no login")
+                  });
+            }else{
+                alert("First auth not working")
+            }
+        })
     }
 
     const [emailReg, setEmailReg] = React.useState("")
@@ -34,11 +40,20 @@ export default (props) =>{
 
     function handleSubmit(event){
 
-            RegisterUser(emailReg,displayNameReg, passwordReg).then((res) => {
-                setShowLogin(true);
-                setEmailReg("");
-                setdisplayNameReg("")
-                setPasswordReg("")
+        LDAPCreateUser(emailReg, displayNameReg,displayNameReg, passwordReg ).then((res) => {
+            console.log(res.data.LDAPCreateUser.status)
+            if(res.data.LDAPCreateUser.status){
+                RegisterUser(emailReg,displayNameReg, passwordReg).then((res) => {
+                    setShowLogin(true);
+                    setEmailReg("");
+                    setdisplayNameReg("")
+                    setPasswordReg("")
+                 }).catch(function(error) {
+                    alert("Register not working")
+                  });
+            }else{
+                alert("First register not working")
+            }
         })
         event.preventDefault();
     }

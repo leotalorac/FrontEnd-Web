@@ -1,14 +1,74 @@
 import axios from "axios";
 
 // IP's
-const FORUM_IP = "https://3.225.10.138:3000"
-const GraphQL_URL = "https://3.238.50.131/graphql"
+const GraphQL_URL = "https://54.243.131.129/graphql"
+
 //URLS
-const URL_FORUMS = `${FORUM_IP}/forums`;
-
-
 
 //Requests
+
+//LDAP
+
+export const LDAPCreateUser = (email, name, surName, password) => {
+  let promise = new Promise((resolve, reject) => {
+    axios
+      .post(GraphQL_URL,
+        {
+          query: `
+          mutation {
+            LDAPCreateUser(user: {email: "${email}", name: ""${name}"", surName: ""${surName}"", password: ""${password}""}) {
+              status
+            }
+          }
+            `
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      )
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((error) => {
+        console.log(error);
+        reject(new Error(error));
+      });
+  });
+  return promise;
+};
+
+
+export const LDAPAuthUser = (email, password) => {
+  let promise = new Promise((resolve, reject) => {
+    axios
+      .post(GraphQL_URL, {
+        query: `
+        query{
+          LDAPAuthUser(email:"${email}",password:"${password}"){
+            status
+          }
+        }
+        `,
+        variables: {}
+      },
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      )
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((error) => {
+        console.log(error);
+        reject(error);
+      });
+  });
+  return promise;
+};
 
 export const getForums = () => {
   let promise = new Promise((resolve, reject) => {
@@ -139,6 +199,10 @@ export const createCourse = (id, name, forum) => {
 };
 
 //GetPosts
+const FORUM_IP = "https://3.225.10.138:3000"
+const URL_FORUMS = `${FORUM_IP}/forums`;
+
+
 export const getPosts = async (id) => {
   let promise = new Promise((resolve, reject) => {
     axios
