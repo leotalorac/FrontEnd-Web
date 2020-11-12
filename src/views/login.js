@@ -41,9 +41,9 @@ export default (props) =>{
     function handleSubmit(event){
 
         LDAPCreateUser(emailReg, displayNameReg,displayNameReg, passwordReg ).then((res) => {
-            console.log(res)
             if(res.data.data.LDAPCreateUser.status){
                 RegisterUser(emailReg,displayNameReg, passwordReg).then((res) => {
+                    console.log(res);
                     setShowLogin(true);
                     setEmailReg("");
                     setdisplayNameReg("")

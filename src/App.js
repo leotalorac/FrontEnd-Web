@@ -28,11 +28,11 @@ function App() {
         <Route
           exact
           path="/course/:course_name/:course_id"
-          component={() => <Course logout={logout} userToken={user.ya} />}
+          component={() => <Course logout={logout} userToken={user != null ? user.ya:""} />}
         ></Route>
-        <Route exact path="/resources/:course_id" component={() => <Class logout={logout}  userToken={user.ya} />}></Route>
+        <Route exact path="/resources/:course_id" component={() => <Class logout={logout}  userToken={user != null ? user.ya:""} />}></Route>
         <Route exact path="/forum/posts/:id"  component={()=><Forum logout={logout} />}></Route>
-        <Route exact path="/" component={() => <Courses logout={logout}  userToken={user.ya} />}></Route>
+        <Route exact path="/" component={() => <Courses logout={logout}  userToken={user != null ? user.ya:""} />}></Route>
       </AuthCheck>
     </Router>
   );
