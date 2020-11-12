@@ -65,7 +65,6 @@ class Course extends Component {
   handlerClick = () => {
     const note = this.state.noteContent;
     if(note.length <= 20 && note.length > 0){
-      console.log(this.props.userToken);
       createNote(note, this.state.course_id, this.props.userToken) 
       .then((res) => {
         console.log(res);
