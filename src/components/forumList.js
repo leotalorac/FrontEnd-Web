@@ -26,7 +26,7 @@ const ForumList = (course_id) => {
 
     function submitHandler(event) {
       event.preventDefault();
-      createForum(user.displayName,user.uid,course_id.course_id, newForumName).then((res) => {
+      createForum(user.displayName,user.uid,course_id.course_id, newForumName, user.ya).then((res) => {
         swal("Creando Foro..!", "...",  "success");
         setModalShow(false)
         setShowSuccessModal(!showSuccessModal)
@@ -77,7 +77,7 @@ const ForumList = (course_id) => {
 
 
   useEffect(() => {
-    getForumsByCourse(course_id.course_id).then((res) => {
+    getForumsByCourse(course_id.course_id, user.ya).then((res) => {
       console.log(res.data.data)
       console.log(course_id.course_id)
       const forumsData = res.data.data.getForumsByCourse.map((item) => ({

@@ -4,8 +4,8 @@ import axios from "axios";
 const GraphQL_URL = "https://54.243.131.129/graphql"
 
 
-
-export const getStudyRooms = async (id) => {
+//Ya
+export const getStudyRooms = async (id, token) => {
   let promise = new Promise((resolve, reject) => {
     axios
     .post(GraphQL_URL, {
@@ -40,7 +40,8 @@ export const getStudyRooms = async (id) => {
       },
         {
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+             "Authorization": "Bearer " + token,
           }
         }
       )
@@ -55,7 +56,8 @@ export const getStudyRooms = async (id) => {
   return promise;
 };
 
-export const inscribeUser = (sr_id, student_name, student_picture,student_email) => {
+//Ya
+export const inscribeUser = (sr_id, student_name, student_picture,student_email, token) => {
     
   let promise = new Promise((resolve, reject) => {
         axios
@@ -70,7 +72,6 @@ export const inscribeUser = (sr_id, student_name, student_picture,student_email)
                   picture: "${student_picture}"
                   email: "${student_email}"
                 }
-                 
                 
                 ){
                 name
@@ -80,7 +81,8 @@ export const inscribeUser = (sr_id, student_name, student_picture,student_email)
           },
             {
               headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                "Authorization": "Bearer " + token,
               }
             }
           )
@@ -95,7 +97,8 @@ export const inscribeUser = (sr_id, student_name, student_picture,student_email)
   return promise;
 }
 
-export const deleteUser = (sr_id, student_id) => {
+//Ya
+export const deleteUser = (sr_id, student_id, token) => {
     
   let promise = new Promise((resolve, reject) => {
         axios
@@ -118,7 +121,8 @@ export const deleteUser = (sr_id, student_id) => {
           },
             {
               headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                "Authorization": "Bearer " + token,
               }
             }
           )
@@ -133,7 +137,7 @@ export const deleteUser = (sr_id, student_id) => {
   return promise;
 }
 
-export const createSR = (name, description, date, duration, ownername, ownerEmail, courseId) => {
+export const createSR = (name, description, date, duration, ownername, ownerEmail, courseId, token) => {
     
   let promise = new Promise((resolve, reject) => {
         axios
@@ -158,7 +162,8 @@ export const createSR = (name, description, date, duration, ownername, ownerEmai
           },
             {
               headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                "Authorization": "Bearer " + token,
               }
             }
           )

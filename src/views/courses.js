@@ -12,13 +12,14 @@ import SideBar from "../components/side-bar/SideBar";
 import 'bootstrap/dist/css/bootstrap.css';
 import { withRouter } from "react-router";
 import swal from 'sweetalert';
+import {useUser} from 'reactfire'
 
 
 
 const Courses = (props) => {
 
     const [show, setShow] = React.useState(false);
-
+    var user = useUser();
 
 
     function NewCourseModal(props) {
@@ -27,7 +28,7 @@ const Courses = (props) => {
 
         function submitHandler(event) {
             event.preventDefault();
-            createCourse(1, newCourseName, "0").then((res) => {
+            createCourse(1, newCourseName, "0", user.ya ).then((res) => {
                 swal("Creando Curso..!", "...", "success");
                 setModalShow(false)
                 setShow(!show)
@@ -77,7 +78,7 @@ const Courses = (props) => {
     }])
 
     useEffect(() => {
-        getAllCourses().then((res) => {
+        getAllCourses(user.ya).then((res) => {
             console.log(res.data.data.getAllCourses)
             const coursesData = res.data.data.getAllCourses.map((item) => ({
                 value: item,

@@ -1,8 +1,8 @@
 import axios from "axios";
-
+import {useUser} from 'reactfire'
 // IP's
 const GraphQL_URL = "https://54.243.131.129/graphql"
-
+// var user = useUser();
 //URLS
 
 //Requests
@@ -70,7 +70,8 @@ export const LDAPAuthUser = (email, password) => {
   return promise;
 };
 
-export const getForums = () => {
+/* No la esta usando */
+export const getForums = (token) => {
   let promise = new Promise((resolve, reject) => {
     axios
       .post(GraphQL_URL, {
@@ -86,7 +87,8 @@ export const getForums = () => {
       },
         {
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            "Authorization": "Bearer " + token,
           }
         }
       )
@@ -104,7 +106,8 @@ export const getForums = () => {
 
 
 //GetPosts
-export const getForumsByCourse = async (id) => {
+//Ya
+export const getForumsByCourse = async (id, token) => {
   let promise = new Promise((resolve, reject) => {
     axios
       .post(GraphQL_URL,
@@ -121,7 +124,8 @@ export const getForumsByCourse = async (id) => {
         },
         {
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            "Authorization": "Bearer " + token,
           }
         }
       )
@@ -137,7 +141,8 @@ export const getForumsByCourse = async (id) => {
 };
 
 //CreateForum
-export const createForum = (userCreator, userCreator_id, course_id, name) => {
+//Ya
+export const createForum = (userCreator, userCreator_id, course_id, name, token) => {
   let promise = new Promise((resolve, reject) => {
     axios
       .post(GraphQL_URL,
@@ -152,7 +157,8 @@ export const createForum = (userCreator, userCreator_id, course_id, name) => {
         },
         {
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            "Authorization": "Bearer " + token,
           }
         }
       )
@@ -168,7 +174,8 @@ export const createForum = (userCreator, userCreator_id, course_id, name) => {
 };
 
 //CreateCourse
-export const createCourse = (id, name, forum) => {
+//Ya
+export const createCourse = (id, name, forum, token) => {
   let promise = new Promise((resolve, reject) => {
     axios
       .post(GraphQL_URL,
@@ -183,7 +190,8 @@ export const createCourse = (id, name, forum) => {
         },
         {
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            "Authorization": "Bearer " + token,
           }
         }
       )
@@ -202,7 +210,7 @@ export const createCourse = (id, name, forum) => {
 const FORUM_IP = "https://3.225.10.138:3000"
 const URL_FORUMS = `${FORUM_IP}/forums`;
 
-
+//No necesita header
 export const getPosts = async (id) => {
   let promise = new Promise((resolve, reject) => {
     axios
@@ -220,7 +228,8 @@ export const getPosts = async (id) => {
 
 
 //CreatePost
-export const createPost = async (id, title, content, userCreator, userCreator_id) => {
+//Ya
+export const createPost = async (id, title, content, userCreator, userCreator_id, token) => {
   let promise = new Promise((resolve, reject) => {
     axios
       .post(GraphQL_URL,
@@ -235,7 +244,8 @@ export const createPost = async (id, title, content, userCreator, userCreator_id
         },
         {
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            "Authorization": "Bearer " + token,
           }
         }
       )
@@ -251,7 +261,8 @@ export const createPost = async (id, title, content, userCreator, userCreator_id
 };
 
 //CreateComment
-export const createComment = (id, idPost, content, userCreator, userCreator_id) => {
+//Ya
+export const createComment = (id, idPost, content, userCreator, userCreator_id, token) => {
   let promise = new Promise((resolve, reject) => {
     axios
       .post(GraphQL_URL,
@@ -266,7 +277,8 @@ export const createComment = (id, idPost, content, userCreator, userCreator_id) 
         },
         {
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            "Authorization": "Bearer " + token,
           }
         }
       )
@@ -282,7 +294,8 @@ export const createComment = (id, idPost, content, userCreator, userCreator_id) 
 };
 
 //CreateAnswer
-export const createAnswer = (id, idPost, idComment, content, userCreator, userCreator_id) => {
+//Ya
+export const createAnswer = (id, idPost, idComment, content, userCreator, userCreator_id, token) => {
   let promise = new Promise((resolve, reject) => {
     axios
       .post(GraphQL_URL,
@@ -297,7 +310,8 @@ export const createAnswer = (id, idPost, idComment, content, userCreator, userCr
         },
         {
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            "Authorization": "Bearer " + token,
           }
         }
       )
@@ -313,9 +327,9 @@ export const createAnswer = (id, idPost, idComment, content, userCreator, userCr
 };
 
 
-
 //deletePost
-export const deletePost = (idForum, idPost) => {
+//Ya
+export const deletePost = (idForum, idPost, token) => {
   let promise = new Promise((resolve, reject) => {
     axios
       .post(GraphQL_URL,
@@ -330,7 +344,8 @@ export const deletePost = (idForum, idPost) => {
         },
         {
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            "Authorization": "Bearer " + token,
           }
         }
       )
@@ -346,7 +361,8 @@ export const deletePost = (idForum, idPost) => {
 };
 
 //deleteComment
-export const deleteComment = (idForum, idPost, idComment) => {
+//Ya
+export const deleteComment = (idForum, idPost, idComment, token) => {
   let promise = new Promise((resolve, reject) => {
     axios
       .post(GraphQL_URL,
@@ -361,7 +377,8 @@ export const deleteComment = (idForum, idPost, idComment) => {
         },
         {
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            "Authorization": "Bearer " + token,
           }
         }
       )
@@ -377,7 +394,8 @@ export const deleteComment = (idForum, idPost, idComment) => {
 };
 
 //deleteAnswer
-export const deleteAnswer = (idForum, idPost, idComment, idAnswer) => {
+//Ya
+export const deleteAnswer = (idForum, idPost, idComment, idAnswer, token) => {
   let promise = new Promise((resolve, reject) => {
     axios
       .post(GraphQL_URL,
@@ -392,7 +410,8 @@ export const deleteAnswer = (idForum, idPost, idComment, idAnswer) => {
         },
         {
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            "Authorization": "Bearer " + token,
           }
         }
       )
@@ -409,8 +428,8 @@ export const deleteAnswer = (idForum, idPost, idComment, idAnswer) => {
 
 
 //Get all courses
-
-export const getAllCourses = () => {
+//Ya
+export const getAllCourses = (token) => {
   let promise = new Promise((resolve, reject) => {
     axios
       .post(GraphQL_URL, {
@@ -427,7 +446,8 @@ export const getAllCourses = () => {
       },
         {
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            "Authorization": "Bearer " + token,
           }
         }
       )
@@ -445,8 +465,8 @@ export const getAllCourses = () => {
 
 
 //Get notes by class
-
-export const getNotesByClass = (id) => {
+//Ya
+export const getNotesByClass = (id, token) => {
   let promise = new Promise((resolve, reject) => {
     axios
       .post(GraphQL_URL, {
@@ -465,7 +485,8 @@ export const getNotesByClass = (id) => {
       },
         {
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            "Authorization": "Bearer " + token,
           }
         }
       )
@@ -480,6 +501,7 @@ export const getNotesByClass = (id) => {
   return promise;
 };
 
+//
 export const RegisterUser = (email, displayName, password) => {
 
   let promise = new Promise((resolve, reject) => {
@@ -511,7 +533,9 @@ export const RegisterUser = (email, displayName, password) => {
   return promise;
 }
 
-export const createNote = (content, id_course, id_user) => {
+
+//Ya
+export const createNote = (content, id_course,token) => {
   let promise = new Promise((resolve, reject) => {
     axios
       .post(GraphQL_URL,
@@ -526,7 +550,8 @@ export const createNote = (content, id_course, id_user) => {
         },
         {
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            "Authorization": "Bearer " + token,
           }
         }
       )
@@ -541,8 +566,8 @@ export const createNote = (content, id_course, id_user) => {
   return promise;
 };
 
-
-export const getResources = (id_course) => {
+//Ya
+export const getResources = (id_course,token) => {
   let promise = new Promise((resolve, reject) => {
     axios
       .post(GraphQL_URL,
@@ -558,7 +583,8 @@ export const getResources = (id_course) => {
         },
         {
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            "Authorization": "Bearer " + token,
           }
         }
       )
@@ -573,7 +599,8 @@ export const getResources = (id_course) => {
   return promise;
 };
 
-export const createResource = (content, id_course, nameUser) => {
+//Ya
+export const createResource = (content, id_course, nameUser, token) => {
   let promise = new Promise((resolve, reject) => {
     axios
       .post(GraphQL_URL,
@@ -589,7 +616,8 @@ export const createResource = (content, id_course, nameUser) => {
         },
         {
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            "Authorization": "Bearer " + token,
           }
         }
       )

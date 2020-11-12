@@ -22,7 +22,7 @@ function StudyRoomDetails(props) {
     })
 
     function handleInscribe(){
-        inscribeUser(props.studyroom._id,user.displayName,"picture",user.email).then((res) => {
+        inscribeUser(props.studyroom._id,user.displayName,"picture",user.email,user.ya).then((res) => {
             SetflagButtonInscribe(true);
             swal("Inscribiendo!", user.displayName , "success");
         })
@@ -32,7 +32,7 @@ function StudyRoomDetails(props) {
     function handleDelete(){
         props.studyroom.students.map((student) => {
             if((student.email == user.email) && (student.name == user.displayName)){
-                deleteUser(props.studyroom._id,student._id).then((res) => {
+                deleteUser(props.studyroom._id,student._id, user.ya).then((res) => {
                     SetflagButtonInscribe(false);
                     swal({
                         title: "¿Estas seguro?",

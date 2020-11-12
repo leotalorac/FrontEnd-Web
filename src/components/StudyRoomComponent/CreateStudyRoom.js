@@ -40,7 +40,7 @@ function CreateStudyRoom(props){
         
         createSR(selectedName,selectedDescription,
                 selectedDate.toISOString(),selectedDuration,
-                user.displayName,user.email,props.course_id)
+                user.displayName,user.email,props.course_id, user.ya)
         .then((res) => {
             swal("Creando...", user.displayName , "success");
             props.renderice();

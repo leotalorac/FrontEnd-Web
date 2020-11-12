@@ -42,7 +42,7 @@ const Forum = (props) => {
 
     function submitCommentHandler(event) {
         event.preventDefault();
-        createComment(id, newCommentPostID, newCommentContent, newCommentCreator, user.uid).then((res) => {
+        createComment(id, newCommentPostID, newCommentContent, newCommentCreator, user.uid, user.ya).then((res) => {
             console.log(res)
             setModalShow(false)
             setShowSuccessModal(!showSuccessModal)
@@ -57,7 +57,7 @@ const Forum = (props) => {
 
     function submitAnswerHandler(event) {
         event.preventDefault();
-        createAnswer(id, newAnswerPostID, newAnswerCommentID, newAnswerContent, newAnswerCreator, "0").then((res) => {
+        createAnswer(id, newAnswerPostID, newAnswerCommentID, newAnswerContent, newAnswerCreator, "0", user.ya).then((res) => {
             console.log(res)
             setModalShow(false)
             setShowSuccessModal(!showSuccessModal)
@@ -72,21 +72,21 @@ const Forum = (props) => {
     }
 
     function deletePostFunction(idPost) {
-        deletePost(id, idPost).then((res) => {
+        deletePost(id, idPost, user.ya).then((res) => {
             swal("Eliminando publicación..!", "...",  "success");
             setShowSuccessModal(!showSuccessModal)
         })
     }
 
     function deleteCommentFunction(idPost, idComment) {
-        deleteComment(id, idPost, idComment).then((res) => {
+        deleteComment(id, idPost, idComment, user.ya).then((res) => {
             swal("Eliminando comentario..!", "...",  "success");
             setShowSuccessModal(!showSuccessModal)
         })
     }
 
     function deleteAnswerFunction(idPost, idComment, idAnswer) {
-        deleteAnswer(id, idPost, idComment, idAnswer).then((res) => {
+        deleteAnswer(id, idPost, idComment, idAnswer, user.ya).then((res) => {
             swal("Eliminando respuesta..!", "...",  "success");
             setShowSuccessModal(!showSuccessModal)
         })
@@ -102,7 +102,7 @@ const Forum = (props) => {
 
         function submitPostHandler(event) {
             event.preventDefault();
-            createPost(id, newPostTitle, newPostContent, user.displayName, "0").then((res) => {
+            createPost(id, newPostTitle, newPostContent, user.displayName, "0", user.ya).then((res) => {
                 console.log(res)
                 setModalShow(false)
                 setShowSuccessModal(!showSuccessModal)

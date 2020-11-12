@@ -11,13 +11,16 @@ import { useFirebaseApp, AuthCheck } from "reactfire";
 import SideBar from "./components/side-bar/SideBar";
 import { render } from "@testing-library/react";
 import { withRouter, Switch } from "react-router-dom";
+import {useUser} from 'reactfire'
 
 function App() {
   const firebase = useFirebaseApp();
-
+  let user = useUser();
   async function logout() {
     await firebase.auth().signOut();
   }
+
+
 
   return (
     <Router>
@@ -25,11 +28,11 @@ function App() {
         <Route
           exact
           path="/course/:course_name/:course_id"
-          component={() => <Course logout={logout} />}
+          component={() => <Course logout={logout} userToken={user.ya} />}
         ></Route>
-        <Route exact path="/resources/:course_id" component={() => <Class logout={logout} />}></Route>
-        <Route exact path="/forum/posts/:id" component={()=><Forum logout={logout} />}></Route>
-        <Route exact path="/" component={() => <Courses logout={logout} />}></Route>
+        <Route exact path="/resources/:course_id" component={() => <Class logout={logout}  userToken={user.ya} />}></Route>
+        <Route exact path="/forum/posts/:id"  component={()=><Forum logout={logout} />}></Route>
+        <Route exact path="/" component={() => <Courses logout={logout}  userToken={user.ya} />}></Route>
       </AuthCheck>
     </Router>
   );

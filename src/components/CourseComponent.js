@@ -46,7 +46,7 @@ class Course extends Component {
   }
 
   componentDidMount() {
-    getNotesByClass(this.state.course_id)
+    getNotesByClass(this.state.course_id, this.props.userToken)
       .then((res) => {
         this.setState({ notes: res.data.data.getNotesByClass }, () =>
           console.log(this.state.notes)
@@ -54,7 +54,7 @@ class Course extends Component {
       })
       .catch();
       
-      getStudyRooms(this.state.course_id)
+      getStudyRooms(this.state.course_id, this.props.userToken)
         .then((res) => {
             this.setState({
                 studyrooms: res.data.data.get_study_rooms
@@ -65,8 +65,10 @@ class Course extends Component {
   handlerClick = () => {
     const note = this.state.noteContent;
     if(note.length <= 20 && note.length > 0){
-      createNote(note, this.state.course_id) 
+      console.log(this.props.userToken);
+      createNote(note, this.state.course_id, this.props.userToken) 
       .then((res) => {
+        console.log(res);
         swal("Creando Nota..!", "...", "success");
         const aux = {
           id_note: 31,

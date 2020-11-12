@@ -28,17 +28,13 @@ class Class extends React.Component {
   }
 
   componentDidMount(){
-
-    
-
-    getResources(this.state.course_id)
+    getResources(this.state.course_id, this.props.userToken)
     .then((res) => {
       this.setState({ resources: res.data.data.allResourcesOfClass }, () =>
         console.log(res.data.data.allResourcesOfClass)
       );
     })
     .catch();
-
   }
 
   
@@ -76,7 +72,7 @@ handlerSidebar = (key) => {
 handlerClick = (name) => {
   const note = this.state.noteContent;
   if(note.length <= 20 && note.length > 0){
-    createResource(note, this.state.course_id,name) 
+    createResource(note, this.state.course_id,name,this.props.userToken) 
     .then((res) => {
       swal("Creando Recurso!" , "...","success");
       const aux = {
@@ -112,6 +108,7 @@ handlerClick = (name) => {
       },
     ];
     
+    console.log(this.props.userToken);
 
     return (
       <div>

@@ -48,6 +48,7 @@ const Separator = styled.div`
 const MyDiv = ({expanded}) => {
 
     var user = useUser();
+  
     if(user != null){
         return(
             <NavHeader expanded={expanded} style={{backgroundColor: "#fff"}}>
@@ -63,6 +64,7 @@ const MyDiv = ({expanded}) => {
                                          style={{fontSize: "3em", marginTop: "15px", color: "#fff"}}/>
                     </Col>
                     <Col >
+                    
                         <p className={"mt-3"} style={{fontWeight: "bold", color: "#fff"}}>  {user.displayName != null ? user.displayName:"" } </p>
                         <p style={{marginTop: "-15px", color: "#fff"}}> {user.email != null ? user.email:"" } </p>
                     </Col>
