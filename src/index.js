@@ -5,11 +5,13 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import firebaseConfig from './firebase-config'
 import {BrowserRouter} from "react-router-dom";
+import $ from "jquery"
 
 import {
   FirebaseAppProvider
 } from 'reactfire'
 
+let swReg;
 ReactDOM.render(
     <FirebaseAppProvider firebaseConfig={firebaseConfig}>
       <Suspense fallback={'Conectando la aplicación'}>
@@ -18,11 +20,14 @@ ReactDOM.render(
         </BrowserRouter>
       </Suspense>
     </FirebaseAppProvider>,
- 
   document.getElementById('root')
 );
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+// window.addEventListener("load",() => {
+//   navigator.serviceWorker.register( "./serviceWorker.js" ).then((reg) => {
+//     console.log("registrado");
+//       swReg=reg;
+//       swReg.pushManager.getSubscription()
+//   });
+// });
+

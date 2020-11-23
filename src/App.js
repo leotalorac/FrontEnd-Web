@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import "./App.css";
 import { BrowserRouter as Router, Route, useHistory } from "react-router-dom";
 import Forum from "./views/forum/forum";
@@ -13,18 +13,26 @@ import { render } from "@testing-library/react";
 import { withRouter, Switch } from "react-router-dom";
 import {useUser} from 'reactfire'
 
-function App() {
+function App(props) {
   const firebase = useFirebaseApp();
   let user = useUser();
   async function logout() {
     await firebase.auth().signOut();
   }
 
+  const [swReg, setswReg] = useState(0);
 
+  useEffect(() => {
+    navigator.serviceWorker.register("./serviceWorker.js").then((reg) => {
+      console.log("registrado");
+        setswReg(reg);
+        reg.pushManager.getSubscription()
+    });
+  });
 
   return (
     <Router>
-      <AuthCheck fallback={<Login />}>
+      <AuthCheck fallback={<Login swReg={swReg} />}>
         <Route
           exact
           path="/course/:course_name/:course_id"

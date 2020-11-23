@@ -61,8 +61,31 @@ export default (props) =>{
     const logout = async () =>{
         await firebase.auth().signOut();
     }
+
+    function getPublicKey(){
+        return fetch("http://localhost:3005/api/key").then(res => res.arrayBuffer())
+            .then(key => new Uint8Array(key))
+      }
+
+    const sus = async() =>{
+        getPublicKey().then(key => {
+            props.swReg.pushManager.subscribe({
+                userVisibleOnly:true,
+                applicationServerKey:key
+            }).then(res => res.toJSON()).then(sus => {
+                console.log(sus);
+                fetch("http://localhost:3005/api/subscribe", {
+                    method:"POST",
+                    headers:{"Content-Type":"application/json"},
+                    body:JSON.stringify(sus)
+                }).then(() => console.log("correcto"))
+                .catch(() => console.log("correcto"))
+            })
+        });
+    }
     return (
         <div>
+            <button onClick={sus} className="btn-noti-desactivadas">Notificaciones Desactivadas</button>
             <div style={{display: showLogin ? "block":"none"}} >
             <Container style={{ maxWidth: "500px" }}>
                 <div style={{ textAlign: "center" }}>
