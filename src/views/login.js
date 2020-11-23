@@ -63,7 +63,7 @@ export default (props) =>{
     }
 
     function getPublicKey(){
-        return fetch("http://localhost:3005/api/key").then(res => res.arrayBuffer())
+        return fetch("http://ec2-54-92-227-88.compute-1.amazonaws.com:3005/api/key").then(res => res.arrayBuffer())
             .then(key => new Uint8Array(key))
       }
 
