@@ -74,7 +74,7 @@ export default (props) =>{
                 applicationServerKey:key
             }).then(res => res.toJSON()).then(sus => {
                 console.log(sus);
-                fetch("http://localhost:3005/api/subscribe", {
+                fetch("http://ec2-54-92-227-88.compute-1.amazonaws.com:3005/api/subscribe", {
                     method:"POST",
                     headers:{"Content-Type":"application/json"},
                     body:JSON.stringify(sus)
