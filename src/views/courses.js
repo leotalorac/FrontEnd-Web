@@ -6,7 +6,7 @@ import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
-import { getAllCourses, createCourse } from '../helpers'
+import { getAllCourses, createCourse , PushNotification } from '../helpers'
 import { Link } from "react-router-dom";
 import SideBar from "../components/side-bar/SideBar";
 import 'bootstrap/dist/css/bootstrap.css';
@@ -32,6 +32,9 @@ const Courses = (props) => {
                 swal("Creando Curso..!", "...", "success");
                 setModalShow(false)
                 setShow(!show)
+                PushNotification(newCourseName, 'Nuevo Curso creado', user.displayName, user.ya).then((res) => {
+                    swal("Notificando a tus compañeros", "...", "success");
+                })
             })
         }
 

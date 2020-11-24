@@ -1,11 +1,75 @@
 import axios from "axios";
 import {useUser} from 'reactfire'
 // IP's
-const GraphQL_URL = "https://52.71.79.75/graphql"
+const GraphQL_URL = "http://localhost:5000/graphql"
 // var user = useUser();
 //URLS
 
 //Requests
+// NOTIFICATIONS
+export const SubscribeUser = (sus,token) => {
+  let promise = new Promise((resolve, reject) => {
+    axios
+      .post(GraphQL_URL,
+        {
+          query: `
+          mutation{
+            subscribeUser(subscription:"${sus}"){
+              status
+            }
+          }
+            `
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            "Authorization": "Bearer " + token
+          }
+        }
+      )
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((error) => {
+        console.log(error);
+        reject(new Error(error));
+      });
+  });
+  return promise;
+};
+
+export const PushNotification = (titulo, cuerpo, usuario, token) => {
+  let promise = new Promise((resolve, reject) => {
+    axios
+      .post(GraphQL_URL,
+        {
+          query: `
+          mutation {
+            pushNotification(notification: {titulo: "${titulo}", cuerpo: "${cuerpo}", usuario: "${usuario}"}) {
+              titulo
+              cuerpo
+              usuario
+            }
+          }
+            `
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            "Authorization": "Bearer " + token
+          }
+        }
+      )
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((error) => {
+        console.log(error);
+        reject(new Error(error));
+      });
+  });
+  return promise;
+};
 
 //LDAP
 
