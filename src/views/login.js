@@ -85,7 +85,6 @@ export default (props) =>{
 
     return (
         <div>
-            <button className="btn-noti-desactivadas">Notificaciones Desactivadas</button>
             <div style={{display: showLogin ? "block":"none"}} >
             <Container style={{ maxWidth: "500px" }}>
                 <div style={{ textAlign: "center" }}>
