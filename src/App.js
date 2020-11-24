@@ -40,7 +40,7 @@ function App(props) {
         ></Route>
         <Route exact path="/resources/:course_id" component={() => <Class logout={logout}  userToken={user != null ? user.ya:""} />}></Route>
         <Route exact path="/forum/posts/:id"  component={()=><Forum logout={logout} />}></Route>
-        <Route exact path="/" component={() => <Courses logout={logout}  userToken={user != null ? user.ya:""} />}></Route>
+        <Route exact path="/" component={() => <Courses swReg={swReg} logout={logout}  userToken={user != null ? user.ya:""} />}></Route>
       </AuthCheck>
     </Router>
   );

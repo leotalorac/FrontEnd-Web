@@ -6,7 +6,7 @@ import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
-import { getAllCourses, createCourse , PushNotification } from '../helpers'
+import { getAllCourses, createCourse , PushNotification, SubscribeUser } from '../helpers'
 import { Link } from "react-router-dom";
 import SideBar from "../components/side-bar/SideBar";
 import 'bootstrap/dist/css/bootstrap.css';
@@ -21,6 +21,26 @@ const Courses = (props) => {
     const [show, setShow] = React.useState(false);
     var user = useUser();
 
+    function getPublicKey(){
+        // return fetch("http://ec2-54-92-227-88.compute-1.amazonaws.com:3005/api/key").then(res => res.arrayBuffer())
+        //     .then(key => new Uint8Array(key))
+        return new Uint8Array([4, 228, 238, 51, 173, 81, 218, 100, 221, 83, 177, 211, 48, 44, 205, 72, 48, 128, 62, 78, 248, 163, 242, 34, 68, 14, 40, 201, 63, 212, 223, 225, 178, 83, 43, 33, 112, 84, 173, 215, 164, 134, 168, 104, 19, 228, 145, 183, 221, 220, 140, 10, 40, 33, 19, 218, 13, 152, 206, 214, 73, 152, 201, 72, 60])
+      }
+
+    const sus = async() =>{ 
+        let key = getPublicKey();
+            console.log(key);
+            props.swReg.pushManager.subscribe({
+                userVisibleOnly:true,
+                applicationServerKey:key
+            }).then(res => res.toJSON()).then(sus => {
+                console.log(JSON.stringify(sus));
+                SubscribeUser(sus,user.ya).then((res) => {
+                    console.log("listo!")
+                })
+            })
+       
+    }
 
     function NewCourseModal(props) {
 
@@ -81,6 +101,11 @@ const Courses = (props) => {
     }])
 
     useEffect(() => {
+        Notification.requestPermission((e) => {
+            if(e == "granted"){
+                sus();
+            }
+        });
         getAllCourses(user.ya).then((res) => {
             console.log(res.data.data.getAllCourses)
             const coursesData = res.data.data.getAllCourses.map((item) => ({
