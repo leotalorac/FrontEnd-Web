@@ -14,6 +14,7 @@ import { withRouter } from "react-router";
 import swal from 'sweetalert';
 import { useUser } from 'reactfire'
 import ListGroup from 'react-bootstrap/ListGroup'
+import otherIcon from "./otherIcon.png"
 
 
 
@@ -208,15 +209,14 @@ const Courses = (props) => {
 
                     )}
                 </Row>
-                <h1 style={{ marginLeft: "1%", fontWeight: "bold", color: "#5E90F2" }}>Profesores</h1>
-                <p>Los puedes encontrar en "el nombre del ms" </p>
-                <Card style={{ marginTop: "5%", marginRight:"40%" }} >
+                <h1 style={{ marginLeft: "1%", fontWeight: "bold", color: "#5E90F2" }}><img src={otherIcon} marginLeft="100px" alt="Logo" width="50" height="50"/> Profesores</h1>
+                {teachers.length>1 && <Card style={{ marginTop: "5%", marginRight:"40%" }} >
                         <ListGroup style={{ maxHeight: "250px" }}>
                             {teachers.map((teacher) =>
                                 <ListGroup.Item action variant="light">{teacher.value.name + "     |     " + teacher.value.mail}</ListGroup.Item>
                             )}
                         </ListGroup>
-                    </Card>
+                    </Card>}
             </div>
         </div>
     )
