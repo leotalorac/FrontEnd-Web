@@ -6,13 +6,14 @@ import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
-import { getAllCourses, createCourse , PushNotification, SubscribeUser } from '../helpers'
+import { getAllCourses, createCourse, PushNotification, SubscribeUser, getTeachers } from '../helpers'
 import { Link } from "react-router-dom";
 import SideBar from "../components/side-bar/SideBar";
 import 'bootstrap/dist/css/bootstrap.css';
 import { withRouter } from "react-router";
 import swal from 'sweetalert';
-import {useUser} from 'reactfire'
+import { useUser } from 'reactfire'
+import ListGroup from 'react-bootstrap/ListGroup'
 
 
 
@@ -21,26 +22,26 @@ const Courses = (props) => {
     const [show, setShow] = React.useState(false);
     var user = useUser();
 
-    function getPublicKey(){
+    function getPublicKey() {
         // return fetch("http://ec2-54-92-227-88.compute-1.amazonaws.com:3005/api/key").then(res => res.arrayBuffer())
         //     .then(key => new Uint8Array(key))
         return new Uint8Array([4, 228, 238, 51, 173, 81, 218, 100, 221, 83, 177, 211, 48, 44, 205, 72, 48, 128, 62, 78, 248, 163, 242, 34, 68, 14, 40, 201, 63, 212, 223, 225, 178, 83, 43, 33, 112, 84, 173, 215, 164, 134, 168, 104, 19, 228, 145, 183, 221, 220, 140, 10, 40, 33, 19, 218, 13, 152, 206, 214, 73, 152, 201, 72, 60])
-      }
+    }
 
-    const sus = async() =>{ 
+    const sus = async () => {
         let key = getPublicKey();
-            console.log(key);
-            if(props.swReg.pushManager!=null){
-                props.swReg.pushManager.subscribe({
-                    userVisibleOnly:true,
-                    applicationServerKey:key
-                }).then(res => res.toJSON()).then(sus => {
-                    console.log(JSON.stringify(sus));
-                    SubscribeUser(sus,user.ya).then((res) => {
-                        console.log("listo!")
-                    })
+        console.log(key);
+        if (props.swReg.pushManager != null) {
+            props.swReg.pushManager.subscribe({
+                userVisibleOnly: true,
+                applicationServerKey: key
+            }).then(res => res.toJSON()).then(sus => {
+                console.log(JSON.stringify(sus));
+                SubscribeUser(sus, user.ya).then((res) => {
+                    console.log("listo!")
                 })
-            }
+            })
+        }
     }
 
     function NewCourseModal(props) {
@@ -49,7 +50,7 @@ const Courses = (props) => {
 
         function submitHandler(event) {
             event.preventDefault();
-            createCourse(1, newCourseName, "0", user.ya ).then((res) => {
+            createCourse(1, newCourseName, "0", user.ya).then((res) => {
                 swal("Creando Curso..!", "...", "success");
                 setModalShow(false)
                 setShow(!show)
@@ -100,15 +101,42 @@ const Courses = (props) => {
             name: String
         }
     }])
+    const [teachers, setTeachers] = React.useState([{
+        value: {
+            name: String,
+            mail: String
+        }
+    }])
 
     useEffect(() => {
-         if(Notification.permission != "granted"){
-            Notification.requestPermission((e) => {
-                if(e == "granted"){
-                    sus();
-                }
-            });
-        }
+        /*if(Notification.permission != "granted"){
+           Notification.requestPermission((e) => {
+               if(e == "granted"){
+                   sus();
+               }
+           });
+       }*/
+        getTeachers(user.ya).then((res) => {
+            //console.log(res.data.data.getTeachers)
+            const teachersData = res.data.data.getTeachers.map((item) => ({
+                //const forumsData = res.data.map((item) => ({
+                value: item,
+            }));
+            const teachersList = [];
+            for (let index = 0; index < teachersData.length; index++) {
+                teachersList.push(teachersData[index])
+
+            }
+            setTeachers(teachersList)
+            /*const coursesData = res.data.data.getAllCourses.map((item) => ({
+                value: item,
+            }));
+            const coursesList = [];
+            for (let index = 0; index < coursesData.length; index++) {
+                coursesList.push(coursesData[index])
+            }
+            setCourses(coursesList)*/
+        }).catch()
         getAllCourses(user.ya).then((res) => {
             console.log(res.data.data.getAllCourses)
             const coursesData = res.data.data.getAllCourses.map((item) => ({
@@ -146,7 +174,8 @@ const Courses = (props) => {
 
 
 
-    console.log(courses)
+
+    console.log(teachers)
     return (
         <div>
 
@@ -179,6 +208,15 @@ const Courses = (props) => {
 
                     )}
                 </Row>
+                <h1 style={{ marginLeft: "1%", fontWeight: "bold", color: "#5E90F2" }}>Profesores</h1>
+                <p>Los puedes encontrar en "el nombre del ms" </p>
+                <Card style={{ marginTop: "5%", marginRight:"40%" }} >
+                        <ListGroup style={{ maxHeight: "250px" }}>
+                            {teachers.map((teacher) =>
+                                <ListGroup.Item action variant="light">{teacher.value.name + "     |     " + teacher.value.mail}</ListGroup.Item>
+                            )}
+                        </ListGroup>
+                    </Card>
             </div>
         </div>
     )
