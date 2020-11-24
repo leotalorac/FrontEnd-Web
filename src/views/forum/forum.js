@@ -8,7 +8,7 @@ import Col from 'react-bootstrap/Col'
 import Modal from 'react-bootstrap/Modal'
 import Container from 'react-bootstrap/Container'
 import { useParams, Link } from "react-router-dom";
-import { getPosts, createPost, createComment, createAnswer,deletePost, deleteComment, deleteAnswer } from '../../helpers'
+import { getPosts, createPost, createComment, createAnswer, deletePost, deleteComment, deleteAnswer } from '../../helpers'
 import 'bootstrap/dist/css/bootstrap.css';
 import ForumList from '../../components/forumList'
 import { useUser } from 'reactfire'
@@ -73,21 +73,21 @@ const Forum = (props) => {
 
     function deletePostFunction(idPost) {
         deletePost(id, idPost, user.ya).then((res) => {
-            swal("Eliminando publicación..!", "...",  "success");
+            swal("Eliminando publicación..!", "...", "success");
             setShowSuccessModal(!showSuccessModal)
         })
     }
 
     function deleteCommentFunction(idPost, idComment) {
         deleteComment(id, idPost, idComment, user.ya).then((res) => {
-            swal("Eliminando comentario..!", "...",  "success");
+            swal("Eliminando comentario..!", "...", "success");
             setShowSuccessModal(!showSuccessModal)
         })
     }
 
     function deleteAnswerFunction(idPost, idComment, idAnswer) {
         deleteAnswer(id, idPost, idComment, idAnswer, user.ya).then((res) => {
-            swal("Eliminando respuesta..!", "...",  "success");
+            swal("Eliminando respuesta..!", "...", "success");
             setShowSuccessModal(!showSuccessModal)
         })
     }
@@ -150,36 +150,24 @@ const Forum = (props) => {
     }
 
 
-    const [forum, setForum] = useState({
+    const [forum, setForum] = useState([{
         _id: String,
-        createdAt: Date,
-        name: String,
-        posts: [{
+        title: String,
+        content: String,
+        userCreator: String,
+        comments: [{
             _id: String,
-            title: String,
             content: String,
             userCreator: String,
-            comments: [{
-                _id: String,
-                content: String,
-                userCreator: String,
-                createdAt: Date,
-                answer: [{
-                    _id: String,
-                    content: String,
-                    userCreator: String,
-                    createdAt: Date,
-                }]
-            }]
-
-        }],
-        userCreator: String
-    })
+            createdAt: Date,
+        }]
+    }])
 
 
     useEffect(() => {
-        getPosts(id).then((res) => {
-            const forumData = res.data[0];
+        getPosts(id, user.ya).then((res) => {
+            console.log(res.data.data.getForumPosts);
+            const forumData = res.data.data.getForumPosts;
             setForum(forumData)
         }).catch()
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -222,9 +210,7 @@ const Forum = (props) => {
             <SideBar data={data} handler={handlerSidebar} />
             <div className="content" style={{ margin: '5%' }}>
                 <Row>
-                    <Col>
-                        <h1 style={{ fontWeight: "bold", color: "#5E90F2" }}>{forum.name}</h1>
-                    </Col>
+
                     <Col>
                         <Button style={{ backgroundColor: "#5E90F2", marginLeft: "70%" }} onClick={() => setModalShow(true)}>
                             Añadir publicación
@@ -234,10 +220,9 @@ const Forum = (props) => {
                             onHide={() => setModalShow(false)}
                         />
                     </Col>
-                </Row>
-                <p>Usuario administrador: {forum.userCreator}</p>
+                </Row>  
                 <ListGroup>
-                    {forum.posts.map((post, index) =>
+                    {forum && forum.map((post, index) =>
 
                         <Card style={{ marginBottom: '2%', backgroundColor: "#5E90F2" }}>
                             <Card.Header style={{ color: "white", fontWeight: "bold" }}>{post.title} | {post.userCreator}</Card.Header>
@@ -247,31 +232,15 @@ const Forum = (props) => {
                                 {post.comments.length !== 0 && !commentsShow && <Link style={{ color: "#5E90F2" }} onClick={() => toggleCommentsShow(true)}>Mostrar comentarios: {post.comments.length}</Link>}
                                 {commentsShow && <Link style={{ color: "#5E90F2" }} onClick={() => toggleCommentsShow(false)}>Esconder comentarios</Link>}
 
-                                {commentsShow && forum.posts[index].comments.map((comment, index2) =>
+                                {commentsShow && forum[index].comments.map((comment, index2) =>
 
                                     <ListGroup.Item style={{ marginBottom: "2%", marginTop: "1%" }} key={index2} >
                                         <p style={{ fontWeight: "lighter" }}>{comment.userCreator} | {String(comment.createdAt).substr(0, 10)}</p>
                                         <p>{comment.content}</p>
-                                        {comment.answer.length !== 0 && !answersShow && <Link style={{ color: "#5E90F2" }} onClick={() => toggleAnswersShow(true)}>Mostrar respuestas: {comment.answer.length}</Link>}
-                                        {answersShow && <Link style={{ color: "#5E90F2" }} onClick={() => toggleAnswersShow(false)}>Esconder respuestas</Link>}
-
-                                        {answersShow && forum.posts[index].comments[index2].answer.map((answer, index3) =>
-
-                                            <ListGroup.Item style={{ borderBlockWidth: "0", marginBottom: "2%", marginTop: "1%" }} key={index3} >
-                                                <p style={{ marginBottom: "2%", fontWeight: "lighter" }}>{answer.userCreator} | {String(answer.createdAt).substr(0, 10)}</p>
-                                                <p>{answer.content}</p>
-                                                {user.displayName === answer.userCreator && <Button onClick={()=>{deleteAnswerFunction(post._id, comment._id, answer._id)}} style={{ backgroundColor: "#FE4A49", marginTop: "1%" }} >
-                                                    <IoIosTrash size={20} />
-                                                </Button>}
-                                            </ListGroup.Item>
-                                        )}
-                                        <Form onSubmit={submitAnswerHandler} style={{ marginTop: "1%" }}>
+                                   
+                                       <Form onSubmit={submitAnswerHandler} style={{ marginTop: "1%" }}>
                                             <Form.Group controlId="answerTextarea1" onChange={changeAnswerContentHandler}>
-                                                <Form.Control as="textarea" rows="3" name={post._id + "|" + comment._id} />
-                                                <Button type="submit" style={{ backgroundColor: "#5E90F2", marginTop: "1%" }} >
-                                                    Responder
-                                                </Button>
-                                                {user.displayName === comment.userCreator && <Button onClick={()=>{deleteCommentFunction(post._id, comment._id)}} style={{ backgroundColor: "#FE4A49", marginLeft: "1%", marginTop: "1%" }} >
+                                                {user.displayName === comment.userCreator && <Button onClick={() => { deleteCommentFunction(post._id, comment._id) }} style={{ backgroundColor: "#FE4A49", marginLeft: "1%", marginTop: "1%" }} >
                                                     <IoIosTrash size={20} />
                                                 </Button>}
                                             </Form.Group>
@@ -284,7 +253,7 @@ const Forum = (props) => {
                                         <Button type="submit" style={{ backgroundColor: "#5E90F2", marginTop: "1%" }} >
                                             Comentar
                                   </Button>
-                                        {user.displayName === post.userCreator && <Button onClick={()=>{deletePostFunction(post._id)}} style={{ backgroundColor: "#FE4A49", marginLeft: "1%", marginTop: "1%" }} >
+                                        {user.displayName === post.userCreator && <Button onClick={() => { deletePostFunction(post._id) }} style={{ backgroundColor: "#FE4A49", marginLeft: "1%", marginTop: "1%" }} >
                                             <IoIosTrash size={20} />
                                         </Button>}
                                     </Form.Group>
