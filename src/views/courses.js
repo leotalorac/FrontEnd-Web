@@ -30,16 +30,17 @@ const Courses = (props) => {
     const sus = async() =>{ 
         let key = getPublicKey();
             console.log(key);
-            props.swReg.pushManager.subscribe({
-                userVisibleOnly:true,
-                applicationServerKey:key
-            }).then(res => res.toJSON()).then(sus => {
-                console.log(JSON.stringify(sus));
-                SubscribeUser(sus,user.ya).then((res) => {
-                    console.log("listo!")
+            if(props.swReg.pushManager!=null){
+                props.swReg.pushManager.subscribe({
+                    userVisibleOnly:true,
+                    applicationServerKey:key
+                }).then(res => res.toJSON()).then(sus => {
+                    console.log(JSON.stringify(sus));
+                    SubscribeUser(sus,user.ya).then((res) => {
+                        console.log("listo!")
+                    })
                 })
-            })
-       
+            }
     }
 
     function NewCourseModal(props) {
@@ -101,11 +102,13 @@ const Courses = (props) => {
     }])
 
     useEffect(() => {
-        Notification.requestPermission((e) => {
-            if(e == "granted"){
-                sus();
-            }
-        });
+         if(Notification.permission != "granted"){
+            Notification.requestPermission((e) => {
+                if(e == "granted"){
+                    sus();
+                }
+            });
+        }
         getAllCourses(user.ya).then((res) => {
             console.log(res.data.data.getAllCourses)
             const coursesData = res.data.data.getAllCourses.map((item) => ({
