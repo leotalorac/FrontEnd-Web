@@ -14,9 +14,7 @@ export const SubscribeUser = (sus,token) => {
         {
           query: `
           mutation{
-            subscribeUser(subscription:"${sus}"){
-              status
-            }
+            subscribeUser(subscription:{endpoint:"${sus.endpoint}",expirationTime:"${sus.expirationTime}",keys:{auth:"${sus.keys.auth}",p256dh:"${sus.keys.p256dh}"}})
           }
             `
         },

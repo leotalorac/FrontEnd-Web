@@ -35,7 +35,7 @@ const Courses = (props) => {
                     userVisibleOnly:true,
                     applicationServerKey:key
                 }).then(res => res.toJSON()).then(sus => {
-                    console.log(JSON.stringify(sus));
+                    console.log(sus);
                     SubscribeUser(sus,user.ya).then((res) => {
                         console.log("listo!")
                     })
