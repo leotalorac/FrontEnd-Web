@@ -307,10 +307,10 @@ export const createCourse = (id, name, forum, token) => {
 };
 
 //GetPosts
-const FORUM_IP = "https://3.225.10.138:3000"
+/*const FORUM_IP = "https://3.225.10.138:3000"
 const URL_FORUMS = `${FORUM_IP}/forums`;
 
-//No necesita header
+
 export const getPosts = async (id) => {
   let promise = new Promise((resolve, reject) => {
     axios
@@ -324,8 +324,53 @@ export const getPosts = async (id) => {
       });
   });
   return promise;
-};
+};*/
 
+export const getPosts = (id, token) => {
+  let promise = new Promise((resolve, reject) => {
+    axios
+      .post(GraphQL_URL, {
+        query: `
+        query{
+          getForumPosts(_idForum:"${id}"){
+            _id
+            title
+            content
+            userCreator
+            userCreator_id
+            forum_id
+            likes
+            comments{
+              _id
+              content
+              userCreator
+              userCreator_id
+              answer
+            }
+          }
+        }
+        `,
+        variables: {}
+      },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            "Authorization": "Bearer " + token
+          }
+        }
+      )
+      .then((res) => {
+        console.log("Esto es lo que imprime la petición")
+        console.log(res.data.data.getForumPosts)
+        resolve(res);
+      })
+      .catch((error) => {
+        console.log(error);
+        reject(error);
+      });
+  });
+  return promise;
+};
 
 //CreatePost
 //Ya
